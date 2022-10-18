@@ -1,9 +1,7 @@
+//  Exhuastive test bench that displays error messages
+//  with the specific opCode and opExt if relevant.
 //
-//
-//
-//
-//
-//
+//  Author: Tom Coe
 module aluTest;
   // i/o
   reg  [15:0] a;

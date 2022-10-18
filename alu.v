@@ -1,7 +1,9 @@
+//  ALU module. Two inputs control the ALU. opCode and opExt.
+//  Based on the control inputs logic is performed on a and b
+//  and the result is output. Also a program register file is updated
+//  and output based on the instruction.
 //
-//
-//
-//
+//  Author: Tom Coe
 module alu (
   input [15:0] a, // operand 1
   input [15:0] b, // operand 2
