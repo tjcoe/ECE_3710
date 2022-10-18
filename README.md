@@ -1,27 +1,8 @@
 # ECE_3710
 
-### Alu instructions
-* Add
-* Addi
-* Sub
-* Subi
-* Cmp
-* Cmpi
-* Cmpi
-* And
-* AndI
-* Or
-* Ori
-* Xor
-* Xori
-* Mov
-* Movi
-* Load
-* Store
-* JCond
-* Jal
-* Shift
-* LSH
-* LSHi
-* RSHi
-* Lui
+### Deliverables
+* alu verilog code
+* alu test bench verilog code
+* alu logic excell sheet with instruction set and control points
+* RF verilog code
+* RF test bench verilog code
