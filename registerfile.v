@@ -6,9 +6,8 @@
 // In this case, all the values in the ram.dat file are 0
 // to clear the registers to 0 on initialization
 //
-// @param WIDTH    		= width/size of the register file
-// @param ADDR_BITS 		= size of bits to represent register file
-
+// @param WIDTH    			= width/size of the register file
+// @param ADDR_BITS 			= size of bits to represent register file
 // @param clk 					= input clock signal
 // @param writeen				= write enable signal
 // @param readaddrA 			= wire(s) connecting all registers that supply data
