@@ -4,7 +4,7 @@ module zerodetect #(parameter WIDTH = 16)
     assign y = (a == 0);
 endmodule
 
-module flopenr #(paramter WIDTH = 16)
+module flopenr #(parameter WIDTH = 16)
                 (input clk, reset, en,
                  input [WIDTH - 1:0] d,
                  output reg [WIDTH - 1:0] q);
