@@ -85,7 +85,7 @@ module controller (input clk, reset, zero,
                             case(opExt)
                                 LOAD: // load reg w/ addr, read mem, select mux to writeback
                                 STOR: // load data to write, write to mem, ???writeback???
-                                JAL:
+                                JAL:  // load addr from reg, set as mext addr for pc, write next instr to reg
                                 Jcond:
                                     case(cond)
                                         EQ:
