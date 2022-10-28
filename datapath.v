@@ -1,4 +1,4 @@
-module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, pcSrc,
+module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, pcSrc, newAluInput,
                  input [1:0] aluSrc1Select, aluSrc2Select,
                  input [15:0] memDataInbound,
                  output aluOutIsZero,
@@ -20,15 +20,15 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
 
     // other registers and muxes
     flopenr pcReg(.clk(clk), .reset(reset), .en(pcEn), .d(nextPc), .q(currentPc));
-    flopr aReg(.clk(clk), .reset(reset), .d(regDataA), .q(a));
-    flopr bReg(.clk(clk), .reset(reset), .d(regDataB), .q(b));
+    flopenr aReg(.clk(clk), .reset(reset), .en(newAluInput), .d(regDataA), .q(a));
+    flopenr bReg(.clk(clk), .reset(reset), .en(newAluInput), .d(regDataB), .q(b));
     flopr writeBackReg(.clk(clk), .reset(reset), .d(writeBack), .q(writeBackData));
     flopr mdr(.clk(clk), .reset(reset), .d(memDataInbound), .q(storedMemData));
     flopr mar(.clk(clk), .reset(reset), .d(currentPc<<4), .q(pcAddr));
 
     mux2 writeDataMux(.d0(writeBackData), .d1(currentPc), .sel(dataToWriteSelect), .res(writeDataRF));
     mux2 writeBackMux(.d0(aluResult), .d1(storedMemData), .sel(writeBackSelect), .res(writeBack));
-    mux2 pcMux  (.d0(aluResult), .d1(b), .sel(pcSrc), .res(nextPc));
+    mux2 pcMux(.d0(aluResult), .d1(b), .sel(pcSrc), .res(nextPc));
     mux4 aluSrc1Mux(.d0(currentPc), .d1(a), .d2(16'b0), .d3(16'b1), .sel(aluSrc1Select), .res(aluSrc1));
     mux4 aluSrc2Mux(.d0(b), .d1(immediate), .d2(16'b1), .d3(16'b0), .sel(aluSrc2Select), .res(aluSrc2));
 
