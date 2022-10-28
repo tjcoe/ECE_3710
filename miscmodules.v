@@ -11,6 +11,7 @@ module flopenr #(parameter WIDTH = 16)
     always @(posedge clk) begin
         if (~reset)  q <= 0;
         else if (en) q <= d;
+        else q <= q;
     end
 endmodule
 
