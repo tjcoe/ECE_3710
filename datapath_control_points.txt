@@ -1,0 +1,20 @@
+Datapath Inputs:
+clk, reset: generic inputs
+pcEn: enable signal for program counter register
+instrWrite: enable signal for instruction register
+regWrite: enable signal for register file
+writeBackSelect: control signal for a mux which chooses whether to write back data from memory or an alu result
+dataToWriteSelect: mux control signal which chooses between the above write back data and the current program counter (for JAL instruction)
+pcSrc: mux control signal which chooses between the alu result (for incrementing the pc by 1 or more for Bcond instructions) or a register (for Jcond instructions)
+newAluInput:enable signal for registers between the alu and register file
+aluSrc1Select: mux at the first alu input which chooses between the current program counter, the a register, constant 0 and constant 1
+aluSrc2Select: mux at the second alu input which chooses between the b register, the immediate, constant 1 and constant 0
+memDataInbound: line that connects ram and the cpu. can carry the instruction, LOAD info, etc.
+
+Datapath Outputs:
+aluOutIsZero: a T/F line which represents the alu having an output of 0 (will probably end up removing)
+PSR: the flags set by the alu
+instr: the instruction
+memWriteData: holds the data that is being sent to memory to store (for STOR instruction)
+memAddr: holds the address to store/load from
+pcAddr: converts the program counter into an actual memory address for the next instruciton.
