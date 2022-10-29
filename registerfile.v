@@ -26,7 +26,7 @@ module registerfile #(parameter WIDTH = 16, ADDR_BITS = 4)
    reg  [WIDTH-1:0] REG_ARR [(1<<ADDR_BITS)-1:0]; //(1<<ADDR_BITS)-1:0
 
 	initial begin
-		$readmemb("C:\\Users\\ojasa\\OneDrive\\Documents\\ECE 3710\\registerfile\\reg_initial.dat", REG_ARR);
+		$readmemb("C:\\Users\\Isaac\\Documents\\ECE3710\\project\\ECE_3710\\reg_initial.dat", REG_ARR);
 	end
 	
 	always @ (posedge clk)
