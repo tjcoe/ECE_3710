@@ -5,7 +5,7 @@ module io_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 		input [(DATA_SIZE - 1) : 0] 	 a_writeData, b_writeData,
 		input a_we, b_we, clk,
 		input [9:0] switches,
-		input [4:0] pushButtons,
+		input [3:0] pushButtons,
 		output reg [(DATA_SIZE - 1) : 0] a_out, b_out
 	);
 
@@ -44,6 +44,9 @@ module io_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 				end
 
 				default: a_out <= 0;
+				
+				12'hFFA:
+					a_out <= { 12'b000000000000, pushButtons };
 			endcase
 		end
 	end
@@ -99,8 +102,8 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 		// 11 -> Do nothing
 
 		case (a_address[ADDRESS_SIZE-1:ADDRESS_SIZE-2])
-			00: a_out <= memory[a_address]; // Do not allow writes to code section
-			01, 10:
+			2'b00: a_out <= memory[a_address]; // Do not allow writes to code section
+			2'b01, 2'b10:
 			begin
 				if (a_we)
 				begin
@@ -114,8 +117,8 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 		endcase
 
 		case (b_address[ADDRESS_SIZE-1:ADDRESS_SIZE-2])
-			00: b_out <= memory[b_address]; // Do not allow writes to code section
-			01, 10:
+			2'b00: b_out <= memory[b_address]; // Do not allow writes to code section
+			2'b01, 2'b10:
 			begin
 				if (b_we)
 				begin
