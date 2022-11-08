@@ -38,7 +38,8 @@ module controller (input clk, reset, zero,
     parameter JAL_REG         = 6'b100100;
     parameter JAL_STORE_PC    = 6'b100101;
     parameter JAL_NEW_PC      = 6'b100110;
-    // need to add a PC_INCR state but ALU needs to be able to preform add without setting flags
+    parameter PC_INCR_ALU     = 6'b100111;
+    parameter PC_INCR_WB      = 6'b101000;
 
     // instructions with immediates (no opExt)
     parameter ADDI  = 6'b000101;
@@ -160,11 +161,11 @@ module controller (input clk, reset, zero,
             IMM_LOAD_REGS:   nextState <= IMM_ALU_EX;
             BASIC_ALU_EX:    nextState <= WRITEBACK;
             IMM_ALU_EX:      nextState <= WRITEBACK;
-            WRITEBACK:       nextState <= FETCH;
+            WRITEBACK:       nextState <= PC_INCR_ALU;
             CMP_LOAD_REG:    nextState <= CMP_ALU_EX;
             CMPI_LOAD_REG:   nextState <= CMPI_ALU_EX;
-            CMP_ALU_EX:      nextState <= FETCH;
-            CMPI_ALU_EX:     nextState <= FETCH;
+            CMP_ALU_EX:      nextState <= PC_INCR_ALU;
+            CMPI_ALU_EX:     nextState <= PC_INCR_ALU;
             MOV_LOAD_REG:    nextState <= MOV_ALU_EX;
             MOVI_LOAD_REG:   nextState <= MOVI_ALU_EX;
             MOV_ALU_EX:      nextState <= WRITEBACK;
@@ -172,11 +173,13 @@ module controller (input clk, reset, zero,
             LOAD_REG:        nextState <= MEM_READ;
             STOR_REG:        nextState <= MEM_WRITE;
             MEM_READ:        nextState <= LOAD_WB;
-            MEM_WRITE:       nextState <= FETCH;
-            LOAD_WB:         nextState <= FETCH;
+            MEM_WRITE:       nextState <= PC_INCR_ALU;
+            LOAD_WB:         nextState <= PC_INCR_ALU;
             JAL_REG:         nextState <= JAL_STORE_PC;
             JAL_STORE_PC:    nextState <= JAL_NEW_PC;
-            JAL_NEW_PC:      nextState <= FETCH;
+            JAL_NEW_PC:      nextState <= PC_INCR_ALU;
+            PC_INCR_ALU:     nextState <= PC_INCR_WB;
+            PC_INCR_WB:      nextState <= FETCH;
             default:         nextState <= FETCH;
         endcase
     end
@@ -290,6 +293,15 @@ module controller (input clk, reset, zero,
             JAL_NEW_PC:
                 begin
                     pcSrc <= 1;
+                    pcWrite <= 1;
+                end
+            PC_INCR_ALU:
+                begin
+                    aluSrc2Sel <= 2'b10;
+                    // set alu to add 1 without psr flags
+                end
+            PC_INCR_WB:
+                begin
                     pcWrite <= 1;
                 end
         endcase
