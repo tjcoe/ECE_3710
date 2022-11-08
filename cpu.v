@@ -3,8 +3,8 @@ module cpu(input clk, reset,
            output memWrite,
            output [15:0] memWriteData, memAddr);
 
-    wire pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, pcSrc, newAluInput, zero;
-    wire [1:0] aluSrc1Select, aluSrc2Select;
+    wire pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, newAluInput, zero;
+    wire [1:0] aluSrc1Select, aluSrc2Select, pcSrc;
     wire [7:0] PSR;
     wire [15:0] instr, pcAddr;
 
