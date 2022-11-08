@@ -1,7 +1,8 @@
 module controller (input clk, reset, zero,
                    input [3:0] op, opExt, cond,
                    output reg memWrite, 
-                   output pcEn, writeBackSelect, dataToWriteSelect, pcSrc, newAluInput,
+                   output pcEn,
+                   output reg writeBackSelect, dataToWriteSelect, pcSrc, newAluInput,
                    output reg regWrite, instrWrite,
                    output reg [1:0] aluSrc1Sel, aluSrc2Sel);
 
@@ -114,21 +115,21 @@ module controller (input clk, reset, zero,
                                 JAL:  nextState <= JAL_REG; // load addr from reg, set as next addr for pc, write next instr to reg
                                 Jcond: // absolute
                                     case(cond)
-                                        EQ:
-                                        NE:
-                                        GE:
-                                        CS:
-                                        CC:
-                                        HI:
-                                        LS:
-                                        LO:
-                                        HS:
-                                        GT:
-                                        LE:
-                                        FS:
-                                        FC:
-                                        LT:
-                                        UC:
+                                        EQ: nextState <= FETCH;
+                                        NE: nextState <= FETCH;
+                                        GE: nextState <= FETCH;
+                                        CS: nextState <= FETCH;
+                                        CC: nextState <= FETCH;
+                                        HI: nextState <= FETCH;
+                                        LS: nextState <= FETCH;
+                                        LO: nextState <= FETCH;
+                                        HS: nextState <= FETCH;
+                                        GT: nextState <= FETCH;
+                                        LE: nextState <= FETCH;
+                                        FS: nextState <= FETCH;
+                                        FC: nextState <= FETCH;
+                                        LT: nextState <= FETCH;
+                                        UC: nextState <= FETCH;
                                         default: nextState <= FETCH; // never jump, just fetch next inst?
                                     endcase
                             endcase
@@ -137,21 +138,21 @@ module controller (input clk, reset, zero,
                         MOVI: nextState <= MOVI_LOAD_REG;// add imm + 0, write to dest
                         Bcond: // relative
                             case(cond)
-                                EQ:
-                                NE:
-                                GE:
-                                CS:
-                                CC:
-                                HI:
-                                LS:
-                                LO:
-                                HS:
-                                GT:
-                                LE:
-                                FS:
-                                FC:
-                                LT:
-                                UC:
+                                EQ: nextState <= FETCH;
+                                NE: nextState <= FETCH;
+                                GE: nextState <= FETCH;
+                                CS: nextState <= FETCH;
+                                CC: nextState <= FETCH;
+                                HI: nextState <= FETCH;
+                                LS: nextState <= FETCH;
+                                LO: nextState <= FETCH;
+                                HS: nextState <= FETCH;
+                                GT: nextState <= FETCH;
+                                LE: nextState <= FETCH;
+                                FS: nextState <= FETCH;
+                                FC: nextState <= FETCH;
+                                LT: nextState <= FETCH;
+                                UC: nextState <= FETCH;
                                 default: nextState <= FETCH; // never jump, just fetch next inst?
                             endcase
                     endcase
@@ -181,7 +182,7 @@ module controller (input clk, reset, zero,
     end
 
     always @(*) begin
-        pcSrc <= 2'b00; pcEn <= 0; pcWriteCond <= 0;
+        pcSrc <= 2'b00; pcWriteCond <= 0;
         instrWrite <= 0;
         newAluInput <= 0;
         aluSrc1Sel <= 2'b00; aluSrc2Sel <= 2'b00;
@@ -190,10 +191,12 @@ module controller (input clk, reset, zero,
         case(state)
             FETCH:
                 begin
+                    $display("FETCH");
                     instrWrite <= 1;
                 end
             DECODE:
                 begin
+                    $display("DECODE");
                     // nothing to do?
                 end
             BASIC_LOAD_REGS:
@@ -202,6 +205,7 @@ module controller (input clk, reset, zero,
                 end
             IMM_LOAD_REGS:
                 begin
+                    $display("IMM_LOAD_REGS");
                     newAluInput <= 1;
                 end
             BASIC_ALU_EX:
@@ -210,11 +214,13 @@ module controller (input clk, reset, zero,
                 end
             IMM_ALU_EX:
                 begin
+                    $display("IMM_ALU_EX");
                     aluSrc1Sel <= 2'b01;
                     aluSrc2Sel <= 2'b01;
                 end
             WRITEBACK:
                 begin
+                    $display("WRITEBACK");
                     regWrite <= 1;
                 end
             CMP_LOAD_REG:
@@ -284,7 +290,7 @@ module controller (input clk, reset, zero,
             JAL_NEW_PC:
                 begin
                     pcSrc <= 1;
-                    pcEn <= 1;
+                    pcWrite <= 1;
                 end
         endcase
     end
