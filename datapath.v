@@ -36,4 +36,6 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
     registerfile rf(.clk(clk), .writeen(regWrite), .readaddrA(regDest), .readaddrB(regSrc), .writedata(writeDataRF), .outdataA(regDataA), .outdataB(regDataB));
     alu          alunit(.a(aluSrc1), .b(aluSrc2), .opCode(instr[15:12]), .opExt(instr[7:4]), .PSR(PSR), .result(aluResult));
     zerodetect   zd(.a(aluResult), .y(aluOutIsZero));
+    //SimpleAdder  Disp(.a(), .b(), .c());
+    //SimpleAdder  PcIncr();
 endmodule
