@@ -2,9 +2,9 @@ module controller (input clk, reset, zero,
                    input [3:0] op, opExt, cond,
                    output reg memWrite, 
                    output pcEn,
-                   output reg writeBackSelect, dataToWriteSelect, pcSrc, newAluInput,
+                   output reg writeBackSelect, dataToWriteSelect, newAluInput,
                    output reg regWrite, instrWrite,
-                   output reg [1:0] aluSrc1Sel, aluSrc2Sel);
+                   output reg [1:0] aluSrc1Sel, aluSrc2Sel, pcSrc);
 
     // Every state that begins with a 01/10/11 is for internal use
     // States beginning with 00 are associated with their corresponding encodings
@@ -38,8 +38,7 @@ module controller (input clk, reset, zero,
     parameter JAL_REG         = 6'b100100;
     parameter JAL_STORE_PC    = 6'b100101;
     parameter JAL_NEW_PC      = 6'b100110;
-    parameter PC_INCR_ALU     = 6'b100111;
-    parameter PC_INCR_WB      = 6'b101000;
+    parameter PC_INCR         = 6'b100111;
 
     // instructions with immediates (no opExt)
     parameter ADDI  = 6'b000101;
@@ -161,11 +160,11 @@ module controller (input clk, reset, zero,
             IMM_LOAD_REGS:   nextState <= IMM_ALU_EX;
             BASIC_ALU_EX:    nextState <= WRITEBACK;
             IMM_ALU_EX:      nextState <= WRITEBACK;
-            WRITEBACK:       nextState <= PC_INCR_ALU;
+            WRITEBACK:       nextState <= PC_INCR;
             CMP_LOAD_REG:    nextState <= CMP_ALU_EX;
             CMPI_LOAD_REG:   nextState <= CMPI_ALU_EX;
-            CMP_ALU_EX:      nextState <= PC_INCR_ALU;
-            CMPI_ALU_EX:     nextState <= PC_INCR_ALU;
+            CMP_ALU_EX:      nextState <= PC_INCR;
+            CMPI_ALU_EX:     nextState <= PC_INCR;
             MOV_LOAD_REG:    nextState <= MOV_ALU_EX;
             MOVI_LOAD_REG:   nextState <= MOVI_ALU_EX;
             MOV_ALU_EX:      nextState <= WRITEBACK;
@@ -173,19 +172,18 @@ module controller (input clk, reset, zero,
             LOAD_REG:        nextState <= MEM_READ;
             STOR_REG:        nextState <= MEM_WRITE;
             MEM_READ:        nextState <= LOAD_WB;
-            MEM_WRITE:       nextState <= PC_INCR_ALU;
-            LOAD_WB:         nextState <= PC_INCR_ALU;
+            MEM_WRITE:       nextState <= PC_INCR;
+            LOAD_WB:         nextState <= PC_INCR;
             JAL_REG:         nextState <= JAL_STORE_PC;
             JAL_STORE_PC:    nextState <= JAL_NEW_PC;
-            JAL_NEW_PC:      nextState <= PC_INCR_ALU;
-            PC_INCR_ALU:     nextState <= PC_INCR_WB;
-            PC_INCR_WB:      nextState <= FETCH;
+            JAL_NEW_PC:      nextState <= PC_INCR;
+            PC_INCR:         nextState <= FETCH;
             default:         nextState <= FETCH;
         endcase
     end
 
     always @(*) begin
-        pcSrc <= 2'b00; pcWriteCond <= 0;
+        pcSrc <= 2'b00; pcWriteCond <= 0; pcWrite <= 0;
         instrWrite <= 0;
         newAluInput <= 0;
         aluSrc1Sel <= 2'b00; aluSrc2Sel <= 2'b00;
@@ -295,13 +293,9 @@ module controller (input clk, reset, zero,
                     pcSrc <= 1;
                     pcWrite <= 1;
                 end
-            PC_INCR_ALU:
+            PC_INCR:
                 begin
-                    aluSrc2Sel <= 2'b10;
-                    // set alu to add 1 without psr flags
-                end
-            PC_INCR_WB:
-                begin
+                    $display("PC_INCR");
                     pcWrite <= 1;
                 end
         endcase
