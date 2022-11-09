@@ -1,11 +1,12 @@
-module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, newAluInput,
+module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, newAluInput, psrRegEn,
                  input [1:0] aluSrc1Select, aluSrc2Select, pcSrc,
-                 input [15:0] memDataInbound,
+                 input [15:0] memDataInbound, pcData,
                  output aluOutIsZero,
-                 output [7:0] PSR,
+                 output [7:0] capturedPSR,
                  output [15:0] instr, memWriteData, memAddr, pcAddr);
 
     wire [3:0]  regDest, regSrc;
+    wire [7:0]  PSR;
     wire [15:0] aluResult, nextPc, currentPc, regDataA, regDataB, a, b, aluSrc1, aluSrc2, writeBackData, writeBack, writeDataRF, storedMemData, immediate, incrPc, branchPc;
 
     // register file address fields
@@ -16,12 +17,15 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
     assign immediate = (instr[7] == 0) ? {8'b0, instr[7:0]} : {8'b1, instr[7:0]};
 
     // load instruction from memory into a register
-    flopenr instrReg(.clk(clk), .reset(reset), .en(instrWrite), .d(memDataInbound), .q(instr));
+    flopenr instrReg(.clk(clk), .reset(reset), .en(instrWrite), .d(pcData), .q(instr));
 
     // other registers and muxes
     flopenr pcReg(.clk(clk), .reset(reset), .en(pcEn), .d(nextPc), .q(currentPc));
     flopenr aReg(.clk(clk), .reset(reset), .en(newAluInput), .d(regDataA), .q(a));
     flopenr bReg(.clk(clk), .reset(reset), .en(newAluInput), .d(regDataB), .q(b));
+
+    flopenrlow #(8) psrReg(.clk(clk), .reset(reset), .en(psrRegEn), .d(PSR), .q(capturedPSR));
+
     flopr writeBackReg(.clk(clk), .reset(reset), .d(writeBack), .q(writeBackData));
     flopr mdr(.clk(clk), .reset(reset), .d(memDataInbound), .q(storedMemData));
     flopr mar(.clk(clk), .reset(reset), .d(currentPc<<4), .q(pcAddr));
@@ -36,6 +40,6 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
     registerfile rf(.clk(clk), .writeen(regWrite), .readaddrA(regDest), .readaddrB(regSrc), .writedata(writeDataRF), .outdataA(regDataA), .outdataB(regDataB));
     alu          alunit(.a(aluSrc1), .b(aluSrc2), .opCode(instr[15:12]), .opExt(instr[7:4]), .PSR(PSR), .result(aluResult));
     zerodetect   zd(.a(aluResult), .y(aluOutIsZero));
-    SimpleAdder  Disp(.a(currentPc), .b(16'b1), .s(0), .c(incrPc));
-    SimpleAdder  PcIncr(.a(currentPc), .b(immediate), .s(1), .c(branchPc));
+    SimpleAdder  Disp(.a(currentPc), .b(16'b1), .s(1'b0), .c(incrPc));
+    SimpleAdder  PcIncr(.a(currentPc), .b(immediate), .s(1'b1), .c(branchPc));
 endmodule
