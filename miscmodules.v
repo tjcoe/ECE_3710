@@ -15,6 +15,17 @@ module flopenr #(parameter WIDTH = 16)
     end
 endmodule
 
+module flopenrlow #(parameter WIDTH = 16)
+                (input clk, reset, en,
+                 input [WIDTH - 1:0] d,
+                 output reg [WIDTH - 1:0] q);
+    always @(negedge clk) begin
+        if (~reset)  q <= 0;
+        else if (en) q <= d;
+        else q <= q;
+    end
+endmodule
+
 module flopr #(parameter WIDTH = 16)
               (input clk, reset,
                input      [WIDTH-1:0] d, 
