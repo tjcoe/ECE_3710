@@ -1,4 +1,4 @@
-module SimpleAdder(input [15:0] a, b, input s, output [15:0] c);
+module SimpleAdder(input [15:0] a, b, input wire s, output [15:0] c);
 
     wire signed [16:0] signed_a;
     wire signed [16:0] signed_b;
