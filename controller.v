@@ -7,7 +7,7 @@ module controller (input clk, reset, zero,
                    output reg regWrite, instrWrite,
                    output reg [1:0] aluSrc1Sel, aluSrc2Sel, pcSrc);
 
-    // Every state that begins with a 01/10/11 is for internal use
+    // Every state that begins with a 001/010/011/100 is for internal use
     // States beginning with 00 are associated with their corresponding encodings
     // E.G. 010010 is just a random variable assigned to basic loading instructions
     // however 000010 corresponds to the ori instruction
@@ -125,7 +125,7 @@ module controller (input clk, reset, zero,
 
     reg [6:0] nextState, state;
     reg       pcWrite, pcWriteCond;
-
+    
     always @(posedge clk)
         if (~reset) state <= FETCH;
         else state <= nextState;
@@ -466,6 +466,7 @@ module controller (input clk, reset, zero,
                 begin
                     $display("JCOND_UC");
                     pcSrc <= 2'b01;
+                    pcWrite <= 1;
                 end
             BCOND_EQ:
                 begin
@@ -569,6 +570,7 @@ module controller (input clk, reset, zero,
                 begin
                     $display("BCOND_UC");
                     pcSrc <= 2'b10;
+                    pcWrite <= 1;
                 end
         endcase
     end
