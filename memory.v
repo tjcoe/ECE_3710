@@ -67,7 +67,7 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	
 	initial 
 	begin
-		$readmemb("MemoryInit.data", memory);
+		$readmemb("C:\\Users\\Isaac\\Documents\\ECE3710\\project\\ECE_3710\\MemoryInit.data", memory);
 	end
 
 	/*	FFFF(11)	_____________
