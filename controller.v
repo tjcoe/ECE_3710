@@ -326,7 +326,7 @@ module controller (input clk, reset, zero,
             MEM_WRITE:
                 begin
                     $display("MEM_WRITE");
-                    // nothing to do?
+                    memWrite <= 1;
                 end
             LOAD_WB:
                 begin
