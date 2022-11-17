@@ -32,7 +32,7 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
 
     mux2 writeDataMux(.d0(writeBackData), .d1(currentPc), .sel(dataToWriteSelect), .res(writeDataRF));
     mux2 writeBackMux(.d0(aluResult), .d1(storedMemData), .sel(writeBackSelect), .res(writeBack));
-    mux4 pcMux(.d0(incrPc), .d1(b), .d2(branchPc), .d3(16'b0), .sel(pcSrc), .res(nextPc));
+    mux4 pcMux(.d0(incrPc), .d1(regDataB), .d2(branchPc), .d3(16'b0), .sel(pcSrc), .res(nextPc));
     mux4 aluSrc1Mux(.d0(currentPc), .d1(a), .d2(16'b0), .d3(16'b1), .sel(aluSrc1Select), .res(aluSrc1));
     mux4 aluSrc2Mux(.d0(b), .d1(immediate), .d2(16'b1), .d3(16'b0), .sel(aluSrc2Select), .res(aluSrc2));
 
