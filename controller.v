@@ -148,7 +148,7 @@ module controller (input clk, reset, zero,
                                 LOAD: nextState <= LOAD_REG; // load reg w/ addr, read mem, select mux to writeback
                                 STOR: nextState <= STOR_REG; // load data to write, write to mem, ???writeback???
                                 JAL:  nextState <= JAL_REG; // load addr from reg, set as next addr for pc, write next instr to reg
-                                Jcond: // absolute
+                                Jcond: // absolute 
                                     case(cond)
                                         EQ: nextState <= JCOND_EQ;
                                         NE: nextState <= JCOND_NE;
