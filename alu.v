@@ -48,6 +48,10 @@ module alu (
 				PSR[0] = (a[15] ~^ ~b[15] && a[15] != temp[15]) ? 1:0; // sets the N flag is overflow occurs
 			   PSR[1] = (temp == 0) ? 1:0;	// if a - b = 0 -> Z = 1 else Z = 0;
 			 end
+			 4'b1110: // MUL - multiply a * b. 
+			 begin
+			   result = a*b;
+			 end
 			 4'b0001: // and
 			 begin
 			   result = a & b; // bit-wise and
@@ -64,7 +68,7 @@ module alu (
 			 begin
 			  result = b;      // passes through the source register value
 			 end
-		  
+		    default: PSR = 0;
 		  endcase
 		end
 		4'b0001: // andi - same as and. Im is automatically zero extended
@@ -99,7 +103,7 @@ module alu (
 			 begin // similar to jcond but not dependent on flags
 			   result = a+b;
 			 end
-			 default: result = 0;
+			 default: PSR = 0;
 		  endcase
 		end
 		4'b0101: // addi - same as add except Imm is sign extended.
@@ -159,7 +163,7 @@ module alu (
 		begin
 		  result = b<<8;
 		end
-		
+		default: PSR = 0;
 	 endcase
 	 
   end

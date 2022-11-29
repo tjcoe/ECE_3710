@@ -139,6 +139,36 @@ module aluTest;
 		error = 1;
 	 end
 	 
+	 //test mul instruction. Does not affect flags
+	 opExt = 4'b1110;
+	 a = 16'b0000_0000_0000_1111; // 15
+	 b = 16'b0000_0000_0000_0010; // 2
+	 #5
+	 if (result != 16'b0000_0000_0001_1110) // 15 * 2 = 30
+	 begin
+	   $display("Error with opCode: %b, opExt: %b", opCode, opExt);
+		$display("Result: %b",result);
+		error = 1;
+	 end
+	 a = 15; // 15
+	 b = -2; // 2
+	 #5
+	 if (result != 16'b1111111111100010) // 15 * 2 = 30
+	 begin
+	   $display("Error with opCode: %b, opExt: %b: Test 2", opCode, opExt);
+		$display("Result: %b",result);
+		error = 1;
+	 end
+	 a = 16'b1000_0000_0000_0000; // 524,288
+	 b = 16'b0000_0000_0000_0010; // 2
+	 #5
+	 if (result != 16'b0000_0000_0000_0000) // 524288 * 2 = 1048576 truncated to 16 bits = 0
+	 begin
+	   $display("Error with opCode: %b, opExt: %b", opCode, opExt);
+		$display("Result: %b",result);
+		error = 1;
+	 end
+	 
 	 
 	 //test and instruction. Does not affect flags
 	 opExt = 4'b0001;
