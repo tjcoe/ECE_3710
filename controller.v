@@ -89,6 +89,7 @@ module controller (input clk, reset, zero,
     parameter SIMPLE_NON_IMM = 7'b0;
     // op exts for op code = 0000
     parameter ADD  = 7'b0000101;
+    parameter MUL  = 7'b0001110;
     parameter SUB  = 7'b0001001;
     parameter CMP  = 7'b0001011;
     parameter AND  = 7'b0000001;
@@ -136,7 +137,7 @@ module controller (input clk, reset, zero,
             DECODE: case(op5Bit)
                         SIMPLE_NON_IMM:
                             case(opExt5Bit)
-                                ADD, SUB, AND, OR, XOR: nextState <= BASIC_LOAD_REGS; // load regs, alu, writeback
+                                ADD, SUB, AND, OR, XOR, MUL: nextState <= BASIC_LOAD_REGS; // load regs, alu, writeback
                                 CMP: nextState <= CMP_LOAD_REG;// load regs, sub (set flags)
                                 MOV: nextState <= MOV_LOAD_REG;// load src, add 0, write to dest
                             endcase
