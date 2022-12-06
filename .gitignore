@@ -5,5 +5,4 @@ simulation/
 *.qpf
 *.qsf
 *.qws
-*.rpt
 c5_pin_model_dump.txt
