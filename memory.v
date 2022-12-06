@@ -6,26 +6,130 @@ module io_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 		input a_we, b_we, clk,
 		input [9:0] switches,
 		input [3:0] pushButtons,
+		input lmb, mmb, rmb,
+		input [15:0] mouse_x, mouse_y,
 		output reg [(DATA_SIZE - 1) : 0] a_out, b_out
 	);
 
 	reg [9:0] leds;
 	reg [(7*2 - 1):0] dualHexSegment[2:0];
 
+	io_block_impl #(.DATA_SIZE(16), ADDRESS_SIZE(12))
+	io_block_a
+	(
+		.address(a_address),
+		.writeData(a_writeData),
+		.we(a_we),
+		.clk(clk),
+		.switches(switches),
+		.pushButtons(pushButtons),
+		.lmb(lmb),
+		.mmb(mmb),
+		.rmb(rmb),
+		.mouse_x(mouse_x),
+		.mouse_y(mouse_y),
+		.leds(leds),
+		.dualHexSegment(dualHexSegment),
+		.out(a_out)
+	);
+	
+	
+	io_block_impl #(.DATA_SIZE(16), ADDRESS_SIZE(12))
+	io_block_b
+	(
+		.address(b_address),
+		.writeData(b_writeData),
+		.we(b_we),
+		.clk(clk),
+		.switches(switches),
+		.pushButtons(pushButtons),
+		.lmb(lmb),
+		.mmb(mmb),
+		.rmb(rmb),
+		.mouse_x(mouse_x),
+		.mouse_y(mouse_y),
+		.leds(leds),
+		.dualHexSegment(dualHexSegment),
+		.out(b_out)
+	);
+	
+	
+	
+//	wire [ADDRESS_SIZE + 4:0] a_fullAddress = { a_address, 4'b0000 };
+//	wire [ADDRESS_SIZE + 4:0] b_fullAddress = { b_address, 4'b0000 };
+//	
+//	always@(posedge clk)
+//	begin
+//		if(a_address[ADDRESS_SIZE-1:ADDRESS_SIZE-2] == 2'b11)
+//		begin
+//			case (a_address)
+//				12'hFFF: // LEDS
+//				begin
+//					if (a_we)
+//					begin
+//						leds <= a_writeData[9:0];
+//					end
+//					a_out <= 0;
+//				end
+//
+//				12'hFFE: // Switches
+//					a_out <= { 6'b000000, switches };
+//				
+//
+//				12'hFFD, 12'hFFC, 12'hFFB: // Right Dual Hex Display 13:7 left hex, 6:0 right hex
+//				begin
+//					if (a_we)
+//					begin
+//						dualHexSegment[a_address[1:0]] <= a_writeData[6:0];
+//					end
+//					a_out <= 0;
+//				end
+//
+//				default: a_out <= 0;
+//				
+//				12'hFFA:
+//					a_out <= { 12'b000000000000, pushButtons };
+//					
+//				12'hFF9:
+//					a_out <= { 13'b0000000000000, lmb, mmb, rmb };
+//					
+//				12'hFF8:
+//					a_out <= mouse_x;
+//				
+//				12'hFF7:
+//					a_out <= mouse_y;
+//				
+//			endcase
+//		end
+//	end
+endmodule
 
-	wire [ADDRESS_SIZE + 4:0] a_fullAddress = { a_address, 4'b0000 };
-	wire [ADDRESS_SIZE + 4:0] b_fullAddress = { b_address, 4'b0000 };
+module io_block_impl #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
+	(
+		input [(ADDRESS_SIZE - 1) : 0] address,
+		input [(DATA_SIZE - 1) : 0] 	 writeData,
+		input we, clk,
+		input [9:0] switches,
+		input [3:0] pushButtons,
+		input lmb, mmb, rmb,
+		input [15:0] mouse_x, mouse_y,
+		inout [9:0] leds,
+		inout [(7*2 - 1):0] dualHexSegment[2:0],
+		output reg [(DATA_SIZE - 1) : 0] out
+	);
+	
+	wire [ADDRESS_SIZE + 4:0] fullAddress = { address, 4'b0000 };
 	
 	always@(posedge clk)
 	begin
-		if(a_address[ADDRESS_SIZE-1:ADDRESS_SIZE-2] == 2'b11)
+		if(address[ADDRESS_SIZE-1:ADDRESS_SIZE-2] == 2'b11)
 		begin
-			case (a_address)
+			case (address)
 				12'hFFF: // LEDS
 				begin
-					if (a_we)
+					if (we)
 					begin
-						leds <= a_writeData[9:0];
+						leds <= writeData[9:0];
 					end
 					a_out <= 0;
 				end
@@ -36,23 +140,34 @@ module io_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 
 				12'hFFD, 12'hFFC, 12'hFFB: // Right Dual Hex Display 13:7 left hex, 6:0 right hex
 				begin
-					if (a_we)
+					if (we)
 					begin
-						dualHexSegment[a_address[1:0]] <= a_writeData[6:0];
+						dualHexSegment[address[1:0]] <= writeData[6:0];
 					end
 					a_out <= 0;
 				end
-
-				default: a_out <= 0;
 				
 				12'hFFA:
-					a_out <= { 12'b000000000000, pushButtons };
+					out <= { 12'b000000000000, pushButtons };
+					
+				12'hFF9:
+					out <= { 13'b0000000000000, lmb, mmb, rmb };
+					
+				12'hFF8:
+					out <= mouse_x;
+				
+				12'hFF7:
+					out <= mouse_y;
+				
+				
+				default: a_out <= 0;
+				
 			endcase
 		end
 	end
-
-
 endmodule
+	
+
 
 module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	(

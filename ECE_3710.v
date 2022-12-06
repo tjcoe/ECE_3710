@@ -178,13 +178,13 @@ module ECE_3710
 	wire [3:0] x1s, x10s, x100s;
 	wire [3:0] y1s, y10s, y100s;
 	
-	wire [8:0] xPos, yPos;
+	wire [10:0] xPos, yPos;
 	
 	ps2_mouse #(
 			.WIDTH(640),
 			.HEIGHT(480),
-			.BIN(700),
-			.HYSTERESIS(30)
+			.BIN(300),
+			.HYSTERESIS(50)
 			) 
 			mouse(
 			.start(~start),  
@@ -207,53 +207,41 @@ module ECE_3710
 	assign y10s = (yPos / 10) % 10;
 	assign y100s = (yPos / 100) % 10;
 
-	sev_seg sev_x1s (.clk(clk), .reset(reset), .value(x1s), .display(hexDisplays[6:0]));
-	sev_seg sev_x10s (.clk(clk), .reset(reset), .value(x10s), .display(hexDisplays[13:7]));
-	sev_seg sev_x100s (.clk(clk), .reset(reset), .value(x100s), .display(hexDisplays[20:14]));
+	sev_seg sev_x1s (.value(x1s), .display(hexDisplays[6:0]));
+	sev_seg sev_x10s (.value(x10s), .display(hexDisplays[13:7]));
+	sev_seg sev_x100s (.value(x100s), .display(hexDisplays[20:14]));
 	
-	sev_seg sev_y1s (.clk(clk), .reset(reset), .value(y1s), .display(hexDisplays[27:21]));
-	sev_seg sev_y10s (.clk(clk), .reset(reset), .value(y10s), .display(hexDisplays[34:28]));
-	sev_seg sev_y100s (.clk(clk), .reset(reset), .value(y100s), .display(hexDisplays[41:35]));
+	sev_seg sev_y1s (.value(y1s), .display(hexDisplays[27:21]));
+	sev_seg sev_y10s (.value(y10s), .display(hexDisplays[34:28]));
+	sev_seg sev_y100s (.value(y100s), .display(hexDisplays[41:35]));
 	
 	
 endmodule
 
 
-module sev_seg(input clk, input reset, input wire signed [3:0] value, output reg [6:0] display);
+module sev_seg(input [3:0] value, output reg [6:0] display);
 	
-	always@(posedge clk) 
+	always@* 
 	begin
-		if(~reset) display = 0;
-		else
-			begin
-				case(value)
-				4'b0000 : display = ~7'b0111111; // 0
-				4'b0001 : display = ~7'b0000110; // 1
-				4'b0010 : display = ~7'b1011011; // 2
-				4'b0011 : display = ~7'b1001111; // 3
-				4'b0100 : display = ~7'b1100110; // 4
-				4'b0101 : display = ~7'b1101101; // 5
-				4'b0110 : display = ~7'b1111101; // 6
-				4'b0111 : display = ~7'b0000111; // 7
-				4'b1000 : display = ~7'b1111111; // 8
-				4'b1001 : display = ~7'b1100111; // 9 
-				4'b1010 : display = ~7'b1110111; // A
-				4'b1011 : display = ~7'b1111100; // b
-				4'b1100 : display = ~7'b1011000; // c
-				4'b1101 : display = ~7'b1011110; // d
-				4'b1110 : display = ~7'b1111001; // E
-				4'b1111 : display = ~7'b1110001; // F
-				default : display = ~7'b0000000; // Always good to have a default! 
-			endcase
-		
-		end
-		
-		
-		
+		case(value)
+			4'b0000 : display = ~7'b0111111; // 0
+			4'b0001 : display = ~7'b0000110; // 1
+			4'b0010 : display = ~7'b1011011; // 2
+			4'b0011 : display = ~7'b1001111; // 3
+			4'b0100 : display = ~7'b1100110; // 4
+			4'b0101 : display = ~7'b1101101; // 5
+			4'b0110 : display = ~7'b1111101; // 6
+			4'b0111 : display = ~7'b0000111; // 7
+			4'b1000 : display = ~7'b1111111; // 8
+			4'b1001 : display = ~7'b1100111; // 9 
+			4'b1010 : display = ~7'b1110111; // A
+			4'b1011 : display = ~7'b1111100; // b
+			4'b1100 : display = ~7'b1011000; // c
+			4'b1101 : display = ~7'b1011110; // d
+			4'b1110 : display = ~7'b1111001; // E
+			4'b1111 : display = ~7'b1110001; // F
+			default : display = ~7'b0000000; // Always good to have a default! 
+		endcase
 	end
-	
-
-
-
 endmodule
 
