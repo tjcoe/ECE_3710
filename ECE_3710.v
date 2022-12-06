@@ -168,22 +168,37 @@
 
 module ECE_3710
 	(
-	input clk, reset,
-	output [41:0] segDisplays
+		input clk, start, clr,
+		inout ps2_clk, ps2_data,
+		output [2:0] btns, // 2 - lmb, 1 - mmb, 0 - rmb
+		output [41:0] hexDisplays
 	);
 	
 	
-	
-	wire mouse_clk, mouse_data;
-	wire [11:0] xPos, yPos;
-	wire lmb, rmb, mmb;
-	wire [2:0] btns;
-	
-	ps2_mouse_xy mouse(.clk(clk), .reset(reset), .ps2_clk(mouse_clk), .ps2_data(mouse_data), .mx(xPos), .my(yPos), .btn_click(btns));
-
 	wire [3:0] x1s, x10s, x100s;
 	wire [3:0] y1s, y10s, y100s;
 	
+	wire [8:0] xPos, yPos;
+	
+	ps2_mouse #(
+			.WIDTH(640),
+			.HEIGHT(480),
+			.BIN(700),
+			.HYSTERESIS(30)
+			) 
+			mouse(
+			.start(~start),  
+			.reset(~clr),  
+			.CLOCK_50(clk),  
+			.PS2_CLK(ps2_clk), 
+			.PS2_DAT(ps2_data), 
+			.button_left(btns[2]),  
+			.button_right(btns[0]),  
+			.button_middle(btns[1]),  
+			.bin_x(xPos),
+			.bin_y(yPos)
+			);
+		
 	assign x1s = xPos % 10;
 	assign x10s = (xPos / 10) % 10;
 	assign x100s = (xPos / 100) % 10;
@@ -192,13 +207,13 @@ module ECE_3710
 	assign y10s = (yPos / 10) % 10;
 	assign y100s = (yPos / 100) % 10;
 
-	sev_seg sev_x1s (.clk(clk), .reset(reset), .value(x1s), .display(segDisplays[6:0]));
-	sev_seg sev_x10s (.clk(clk), .reset(reset), .value(x10s), .display(segDisplays[13:7]));
-	sev_seg sev_x100s (.clk(clk), .reset(reset), .value(x100s), .display(segDisplays[20:14]));
+	sev_seg sev_x1s (.clk(clk), .reset(reset), .value(x1s), .display(hexDisplays[6:0]));
+	sev_seg sev_x10s (.clk(clk), .reset(reset), .value(x10s), .display(hexDisplays[13:7]));
+	sev_seg sev_x100s (.clk(clk), .reset(reset), .value(x100s), .display(hexDisplays[20:14]));
 	
-	sev_seg sev_y1s (.clk(clk), .reset(reset), .value(y1s), .display(segDisplays[27:21]));
-	sev_seg sev_y10s (.clk(clk), .reset(reset), .value(y10s), .display(segDisplays[34:28]));
-	sev_seg sev_y100s (.clk(clk), .reset(reset), .value(y100s), .display(segDisplays[41:35]));
+	sev_seg sev_y1s (.clk(clk), .reset(reset), .value(y1s), .display(hexDisplays[27:21]));
+	sev_seg sev_y10s (.clk(clk), .reset(reset), .value(y10s), .display(hexDisplays[34:28]));
+	sev_seg sev_y100s (.clk(clk), .reset(reset), .value(y100s), .display(hexDisplays[41:35]));
 	
 	
 endmodule
