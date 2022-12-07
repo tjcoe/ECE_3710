@@ -254,6 +254,9 @@ begin
 		if($signed(y_latch) >= THRESHOLD)
 		begin
 			y_latch <= y_latch - BIN;
+			if(oY_BIN != 0)
+			begin
+				oY_BIN <= oY_BIN - 1'b1;
 			if(oY_BIN != HEIGHT-1)
 			begin
 				oY_BIN <= oY_BIN + 1'b1;
@@ -262,6 +265,9 @@ begin
 		else if($signed(y_latch) <= -THRESHOLD)
 		begin
 			y_latch <= y_latch + BIN;
+			if(oY_BIN != HEIGHT-1)
+			begin
+				oY_BIN <= oY_BIN + 1'b1;
 			if(oY_BIN != 0)
 			begin
 				oY_BIN <= oY_BIN - 1'b1;

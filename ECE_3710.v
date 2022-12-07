@@ -168,6 +168,17 @@
 
 module ECE_3710
 	(
+		input clk, start, clr, vgaClr,
+		inout ps2_clk, ps2_data,
+		output [2:0] btns, // 2 - lmb, 1 - mmb, 0 - rmb
+		output [41:0] hexDisplays,
+		output hSync = 1, vSync = 1, 
+      output bright,
+      output clk_25Mhz,       // drives pixel clock for VGA DAC
+      output VGA_SYNC_N = 0,  // unused so tied to ground
+      output [7:0] red,
+      output [7:0] green,
+      output [7:0] blue
 		input clk, start, clr,
 		inout ps2_clk, ps2_data,
 		output [2:0] btns, // 2 - lmb, 1 - mmb, 0 - rmb
@@ -183,6 +194,8 @@ module ECE_3710
 	ps2_mouse #(
 			.WIDTH(640),
 			.HEIGHT(480),
+			.BIN(5),
+			.HYSTERESIS(3)
 			.BIN(300),
 			.HYSTERESIS(50)
 			) 
@@ -197,6 +210,11 @@ module ECE_3710
 			.button_middle(btns[1]),  
 			.bin_x(xPos),
 			.bin_y(yPos)
+			);
+			
+	// instantiate vga controller
+   vgaControl draw(clk, vgaClr, xPos, yPos, hSync, vSync, bright, clk_25Mhz, VGA_SYNC_N, red, green, blue);
+	
 			);
 		
 	assign x1s = xPos % 10;

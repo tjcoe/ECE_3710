@@ -3,8 +3,8 @@ module bitGen (
   input bright,
   input [9:0] hPos,
   input [8:0] vPos,
-  input [10:0] x,
-  input [10:0] y,
+  input [9:0] mX,
+  input [8:0] mY,
   output reg [7:0] red,
   output reg [7:0] green,
   output reg [7:0] blue
@@ -17,20 +17,14 @@ module bitGen (
   // registers for drawing spaces
   reg box1; reg box2; reg box3; reg draw; reg mouse;
   
-  reg [10:0] mX;
-  reg [10:0] mY;
-  
   // combinational always block
   always @*  
   begin
     
-	 mX = x;
-	 mY = y;
-  
 	 // boundary deffinitions for color options and draw space
 	 box1  <= ((vPos <= 79) && (hPos <= 213));
 	 box2  <= ((vPos <= 79) && (hPos >= 214 && hPos <= 426));
-	 box3  <= ((vPos <= 79) && (hPos > 426));
+	 box3  <= ((vPos <= 79) && (hPos >= 426));
 	 draw  <= (vPos >= 80);
 	 // creates boundary for mouse image
 	 mouse <= ((hPos == mX    && (vPos >= mY  && vPos <= mY+16)) | 
@@ -52,12 +46,6 @@ module bitGen (
 	   red   <= OFF;
 	   green <= OFF;
 		blue  <= OFF;
-	 end	
-	 else if (mouse) // draws mouse image
-	 begin
-	   red   <= OFF;
-		green <= OFF;
-		blue  <= OFF;
 	 end
 	 else if (box1) // red box top left
 	 begin
@@ -76,7 +64,13 @@ module bitGen (
       red   <= OFF;
 		green <= OFF;
 		blue  <= ON;
-    end
+    end	
+	 else if (mouse) // draws mouse image
+	 begin
+	   red   <= OFF;
+		green <= OFF;
+		blue  <= OFF;
+	 end
 	 else if (draw) // loads image buffer from memory (not done just white right now)
 	 begin
 	   red   <= ON;
