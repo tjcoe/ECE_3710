@@ -28,6 +28,19 @@ module aluTest;
 	 
 	 // start by testing all register instructions -> opCode = 0000
 	 opCode = 4'b0000;
+	 
+	 	 // test modi instruction
+	 opExt = 4'b0100;
+	 a = 79;
+	 b = 4;
+	 #5
+	 if (result != 3)
+	 begin
+	   $display("Error with opCode: %b, opExt: %b", opCode, opExt);
+		$display("Result: %b",result);
+		error = 1;
+	 end
+	 
 	 // test add instruction and all possible flag cases
 	 opExt = 4'b0101;
 	 a = 16'b0000_0000_0000_0001; // 1 + 2 = 3 no flags set
