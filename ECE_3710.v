@@ -179,6 +179,10 @@ module ECE_3710
       output [7:0] red,
       output [7:0] green,
       output [7:0] blue
+		input clk, start, clr,
+		inout ps2_clk, ps2_data,
+		output [2:0] btns, // 2 - lmb, 1 - mmb, 0 - rmb
+		output [41:0] hexDisplays
 	);
 	
 	
@@ -192,6 +196,8 @@ module ECE_3710
 			.HEIGHT(480),
 			.BIN(5),
 			.HYSTERESIS(3)
+			.BIN(300),
+			.HYSTERESIS(50)
 			) 
 			mouse(
 			.start(~start),  
@@ -209,6 +215,7 @@ module ECE_3710
 	// instantiate vga controller
    vgaControl draw(clk, vgaClr, xPos, yPos, hSync, vSync, bright, clk_25Mhz, VGA_SYNC_N, red, green, blue);
 	
+			);
 		
 	assign x1s = xPos % 10;
 	assign x10s = (xPos / 10) % 10;
@@ -254,6 +261,5 @@ module sev_seg(input [3:0] value, output reg [6:0] display);
 			default : display = ~7'b0000000; // Always good to have a default! 
 		endcase
 	end
-	
 endmodule
 
