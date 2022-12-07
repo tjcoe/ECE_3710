@@ -1,0 +1,159 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2018  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+# Date created = 16:42:59  December 05, 2022
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		ECE_3710_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEMA5F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY ECE_3710
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:42:59  DECEMBER 05, 2022"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_AF14 -to clk
+set_location_assignment PIN_V17 -to btns[2]
+set_location_assignment PIN_W16 -to btns[1]
+set_location_assignment PIN_V16 -to btns[0]
+set_location_assignment PIN_Y16 -to clr
+set_location_assignment PIN_AA14 -to start
+set_location_assignment PIN_AE26 -to hexDisplays[0]
+set_location_assignment PIN_AE27 -to hexDisplays[1]
+set_location_assignment PIN_AE28 -to hexDisplays[2]
+set_location_assignment PIN_AG27 -to hexDisplays[3]
+set_location_assignment PIN_AF28 -to hexDisplays[4]
+set_location_assignment PIN_AG28 -to hexDisplays[5]
+set_location_assignment PIN_AH28 -to hexDisplays[6]
+set_location_assignment PIN_AJ29 -to hexDisplays[7]
+set_location_assignment PIN_AH29 -to hexDisplays[8]
+set_location_assignment PIN_AH30 -to hexDisplays[9]
+set_location_assignment PIN_AG30 -to hexDisplays[10]
+set_location_assignment PIN_AF29 -to hexDisplays[11]
+set_location_assignment PIN_AF30 -to hexDisplays[12]
+set_location_assignment PIN_AD27 -to hexDisplays[13]
+set_location_assignment PIN_AB23 -to hexDisplays[14]
+set_location_assignment PIN_AE29 -to hexDisplays[15]
+set_location_assignment PIN_AD29 -to hexDisplays[16]
+set_location_assignment PIN_AC28 -to hexDisplays[17]
+set_location_assignment PIN_AD30 -to hexDisplays[18]
+set_location_assignment PIN_AC29 -to hexDisplays[19]
+set_location_assignment PIN_AC30 -to hexDisplays[20]
+set_location_assignment PIN_AD26 -to hexDisplays[21]
+set_location_assignment PIN_AC27 -to hexDisplays[22]
+set_location_assignment PIN_AD25 -to hexDisplays[23]
+set_location_assignment PIN_AC25 -to hexDisplays[24]
+set_location_assignment PIN_AB28 -to hexDisplays[25]
+set_location_assignment PIN_AB25 -to hexDisplays[26]
+set_location_assignment PIN_AB22 -to hexDisplays[27]
+set_location_assignment PIN_AA24 -to hexDisplays[28]
+set_location_assignment PIN_Y23 -to hexDisplays[29]
+set_location_assignment PIN_Y24 -to hexDisplays[30]
+set_location_assignment PIN_W22 -to hexDisplays[31]
+set_location_assignment PIN_W24 -to hexDisplays[32]
+set_location_assignment PIN_V23 -to hexDisplays[33]
+set_location_assignment PIN_W25 -to hexDisplays[34]
+set_location_assignment PIN_V25 -to hexDisplays[35]
+set_location_assignment PIN_AA28 -to hexDisplays[36]
+set_location_assignment PIN_Y27 -to hexDisplays[37]
+set_location_assignment PIN_AB27 -to hexDisplays[38]
+set_location_assignment PIN_AB26 -to hexDisplays[39]
+set_location_assignment PIN_AA26 -to hexDisplays[40]
+set_location_assignment PIN_AA25 -to hexDisplays[41]
+set_location_assignment PIN_AD7 -to ps2_clk
+set_location_assignment PIN_AE7 -to ps2_data
+set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name SDC_FILE ECE_3710.sdc
+set_global_assignment -name VERILOG_FILE vgaTiming.v
+set_global_assignment -name VERILOG_FILE vgaControl.v
+set_global_assignment -name VERILOG_FILE tb_timing.v
+set_global_assignment -name VERILOG_FILE tb_bitGen.v
+set_global_assignment -name VERILOG_FILE bitGen.v
+set_global_assignment -name VERILOG_FILE ps2_mouse.v
+set_global_assignment -name VERILOG_FILE tb_simpleAdder.v
+set_global_assignment -name VERILOG_FILE tb_registerfile.v
+set_global_assignment -name VERILOG_FILE tb_memoryFSM.v
+set_global_assignment -name VERILOG_FILE tb_memory.v
+set_global_assignment -name VERILOG_FILE tb_datapath.v
+set_global_assignment -name VERILOG_FILE tb_cpuMem.v
+set_global_assignment -name VERILOG_FILE tb_cpu.v
+set_global_assignment -name VERILOG_FILE tb_alu.v
+set_global_assignment -name VERILOG_FILE SimpleAdder.v
+set_global_assignment -name VERILOG_FILE registerfile.v
+set_global_assignment -name VERILOG_FILE miscmodules.v
+set_global_assignment -name VERILOG_FILE memory.v
+set_global_assignment -name VERILOG_FILE ECE_3710.v
+set_global_assignment -name VERILOG_FILE datapath.v
+set_global_assignment -name VERILOG_FILE CpuMem.v
+set_global_assignment -name VERILOG_FILE cpu.v
+set_global_assignment -name VERILOG_FILE controller.v
+set_global_assignment -name VERILOG_FILE alu.v
+set_location_assignment PIN_C10 -to VGA_SYNC_N
+set_location_assignment PIN_J14 -to blue[7]
+set_location_assignment PIN_G15 -to blue[6]
+set_location_assignment PIN_F15 -to blue[5]
+set_location_assignment PIN_H14 -to blue[4]
+set_location_assignment PIN_F14 -to blue[3]
+set_location_assignment PIN_H13 -to blue[2]
+set_location_assignment PIN_G13 -to blue[1]
+set_location_assignment PIN_B13 -to blue[0]
+set_location_assignment PIN_F10 -to bright
+set_location_assignment PIN_A11 -to clk_25Mhz
+set_location_assignment PIN_E11 -to green[7]
+set_location_assignment PIN_F11 -to green[6]
+set_location_assignment PIN_G12 -to green[5]
+set_location_assignment PIN_G11 -to green[4]
+set_location_assignment PIN_G10 -to green[3]
+set_location_assignment PIN_H12 -to green[2]
+set_location_assignment PIN_J10 -to green[1]
+set_location_assignment PIN_J9 -to green[0]
+set_location_assignment PIN_B11 -to hSync
+set_location_assignment PIN_D11 -to vSync
+set_location_assignment PIN_F13 -to red[7]
+set_location_assignment PIN_E12 -to red[6]
+set_location_assignment PIN_D12 -to red[5]
+set_location_assignment PIN_C12 -to red[4]
+set_location_assignment PIN_B12 -to red[3]
+set_location_assignment PIN_E13 -to red[2]
+set_location_assignment PIN_C13 -to red[1]
+set_location_assignment PIN_A13 -to red[0]
+set_location_assignment PIN_AE12 -to vgaClr
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -145,13 +145,13 @@ module alu (
 			 end
 			 4'b0000: // LSHI - logical left shift
 			 begin
-			   bExt = $signed(b[3:0]); // sign extends the 4-bit Imm value
+			   bExt = $signed(b[4:0]); // sign extends the 4-bit Imm value
 				temp = ~bExt+1;
-				result = (bExt[15] == 0) ? a<<b:a>>temp; // same as LSH but with sign extension for immediate value
+				result = (bExt[15] == 0) ? a<<b : a>>temp; // same as LSH but with sign extension for immediate value
 			 end
 			 4'b0001: // RSHI - logical right shift
 			 begin
-			   bExt = $signed(b[3:0]); // sign extends the 4-bit Imm value
+			   bExt = $signed(b[4:0]); // sign extends the 4-bit Imm value
 				temp = ~bExt+1;
 				result = a>>bExt;
 				result = (bExt[15] == 0) ? a>>b:a<<temp; // same as LSHi but shift directions are opposite
