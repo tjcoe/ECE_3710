@@ -27,10 +27,6 @@ module alu (
 		  
 		  case (opExt)
 		    
-			 4'b0100: // modi need mod 4 to index pixel location
-			 begin
-			  result = a%b;      // a mod b
-			 end
 		    4'b0101: // add
 			 begin
 			   result = a + b;
@@ -118,6 +114,10 @@ module alu (
 		  PSR[4] = carry[16]; // sets the carry flag to the MSB of 'carry' reg
 		  PSR[2] = (a[15] ~^ bExt[15] && a[15] != result[15]) ? 1:0; // if two positives add to a negative or two negatives
 		end
+		4'b0110: // modi (on the ISA this is andui but we will not use that instruction)
+		begin
+		  result = a%b;
+		end
 		4'b1001: // subi - same as sub except Imm is sign extended.
 		begin
 		  bExt = $signed(b[7:0]);
@@ -149,16 +149,11 @@ module alu (
 			 end
 			 4'b0000: // LSHI - logical left shift
 			 begin
-			   bExt = $signed(b[3:0]); // sign extends the 4-bit Imm value
-				temp = ~bExt+1;
-				result = (bExt[15] == 0) ? a<<b:a>>temp; // same as LSH but with sign extension for immediate value
+				result = a<<b; 
 			 end
 			 4'b0001: // RSHI - logical right shift
 			 begin
-			   bExt = $signed(b[3:0]); // sign extends the 4-bit Imm value
-				temp = ~bExt+1;
-				result = a>>bExt;
-				result = (bExt[15] == 0) ? a>>b:a<<temp; // same as LSHi but shift directions are opposite
+				result = a>>b;
 			 end
 			 default: result = 0;
 		  endcase
