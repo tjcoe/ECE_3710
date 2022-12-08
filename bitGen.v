@@ -17,7 +17,7 @@ module bitGen (
   parameter [7:0] OFF= 0;
   
   // registers for drawing spaces
-  reg box1; reg box2; reg box3; reg draw; reg mouse;
+  reg box1; reg box2; reg box3; reg draw; reg mouse; reg mouseInside;
   
   reg [10:0] mX;
   reg [10:0] mY;
@@ -60,6 +60,19 @@ module bitGen (
 				  (hPos == mX+9  && ( vPos == mY+9  | vPos == mY+12 | vPos == mY+16 | vPos == mY+17)) |
 				  (hPos == mX+10 && ( vPos == mY+10 | vPos == mY+12)) |
 				  (hPos == mX+11 && ( vPos == mY+11 | vPos == mY+11 | vPos == mY+12)));
+				  
+	 mouseInside = ((hPos == mX+1 && (vPos > mY && vPos <= mY+15)) |
+	                (hPos == mX+2 && (vPos > mY+1 && vPos <= mY+14)) |
+						 (hPos == mX+3 && (vPos > mY+2 && vPos <= mY+13)) |
+						 (hPos == mX+4 && (vPos > mY+3 && vPos <= mY+12)) |
+						 (hPos == mX+5 && (vPos > mY+4 && vPos <= mY+13)) |
+						 (hPos == mX+6 && (vPos > mY+5 && vPos <= mY+15)) |
+						 (hPos == mX+7 && (vPos > mY+6 && vPos <= mY+11)) |
+						 (hPos == mX+7 && (vPos > mY+12 && vPos <= mY+17)) |
+						 (hPos == mX+8 && (vPos > mY+13 && vPos <= mY+17)) |
+						 (hPos == mX+8 && (vPos > mY+7 && vPos <= mY+11)) |
+						 (hPos == mX+9 && (vPos > mY+8 && vPos <= mY+11)) |
+						 (hPos == mX+10 && (vPos == mY+11)));
 	 
 	 // Draws the screen
     if (~bright) // if bright is low don't paint rbg = 0
@@ -73,6 +86,12 @@ module bitGen (
 	   red   = OFF;
 		green = OFF;
 		blue  = OFF;
+	 end	
+	 else if (mouseInside) // draws mouse image
+	 begin
+	   red   = ON;
+		green = ON;
+		blue  = ON;
 	 end
 	 else if (box1) // red box top left
 	 begin
