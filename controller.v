@@ -141,6 +141,7 @@ module controller (input clk, reset, zero,
                                 ADD, SUB, AND, OR, XOR, MUL: nextState <= BASIC_LOAD_REGS; // load regs, alu, writeback
                                 CMP: nextState <= CMP_LOAD_REG;// load regs, sub (set flags)
                                 MOV: nextState <= MOV_LOAD_REG;// load src, add 0, write to dest
+                                default: nextState <= PC_INCR;
                             endcase
                         LSH_INSTRS:
                             if (opExt5Bit == 5'b00100) nextState <= BASIC_LOAD_REGS; // LSH - load regs, alu shift, writeback
@@ -169,6 +170,7 @@ module controller (input clk, reset, zero,
                                         UC: nextState <= JCOND_UC;
                                         default: nextState <= PC_INCR; // never jump, just fetch next inst?
                                     endcase
+                                default: nextState <= PC_INCR;
                             endcase
                         ADDI, SUBI, ANDI, ORI, XORI, LUI, MODI: nextState <= IMM_LOAD_REGS; // load reg, alu, writeback
                         CMPI: nextState <= CMPI_LOAD_REG;// load reg, sub (set flags)
@@ -192,6 +194,7 @@ module controller (input clk, reset, zero,
                                 UC: nextState <= BCOND_UC;
                                 default: nextState <= PC_INCR; // never jump, just fetch next inst?
                             endcase
+                        default: nextState <= PC_INCR;
                     endcase
             BASIC_LOAD_REGS: nextState <= BASIC_ALU_EX;
             IMM_LOAD_REGS:   nextState <= IMM_ALU_EX;
@@ -575,6 +578,10 @@ module controller (input clk, reset, zero,
                     $display("BCOND_UC");
                     pcSrc <= 2'b10;
                     pcWrite <= 1;
+                end
+            default:
+                begin
+                    $display("DEFAULT");
                 end
         endcase
     end
