@@ -15,4 +15,4 @@
    | Middle Mouse Button| 4089 (0xFF9) | 1                     |Boolean          | 1 pressed, 0 not pressed |
    | Left Mouse Button  | 4089 (0xFF9) | 2                     |Boolean          | 1 pressed, 0 not pressed |
    | Mouse X Position   | 4088 (0xFF8) | [15:0]                |Unsigned Short   | 0-479                    | 
-   | Mouse X Position   | 4088 (0xFF8) | [15:0]                |Unsigned Short   | 0-649                    | 
+   | Mouse Y Position   | 4087 (0xFF7) | [15:0]                |Unsigned Short   | 0-649                    | 

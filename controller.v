@@ -85,6 +85,7 @@ module controller (input clk, reset, zero,
     parameter MOVI  = 7'b0001101;
     parameter LUI   = 7'b0001111;
     parameter Bcond = 7'b0001100; // see cond values
+    parameter MODI  = 7'b0000110;
 
     parameter SIMPLE_NON_IMM = 7'b0;
     // op exts for op code = 0000
@@ -169,7 +170,7 @@ module controller (input clk, reset, zero,
                                         default: nextState <= PC_INCR; // never jump, just fetch next inst?
                                     endcase
                             endcase
-                        ADDI, SUBI, ANDI, ORI, XORI, LUI: nextState <= IMM_LOAD_REGS; // load reg, alu, writeback
+                        ADDI, SUBI, ANDI, ORI, XORI, LUI, MODI: nextState <= IMM_LOAD_REGS; // load reg, alu, writeback
                         CMPI: nextState <= CMPI_LOAD_REG;// load reg, sub (set flags)
                         MOVI: nextState <= MOVI_LOAD_REG;// add imm + 0, write to dest
                         Bcond: // relative

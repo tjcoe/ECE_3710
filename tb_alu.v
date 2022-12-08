@@ -28,6 +28,7 @@ module aluTest;
 	 
 	 // start by testing all register instructions -> opCode = 0000
 	 opCode = 4'b0000;
+	 
 	 // test add instruction and all possible flag cases
 	 opExt = 4'b0101;
 	 a = 16'b0000_0000_0000_0001; // 1 + 2 = 3 no flags set
@@ -356,6 +357,18 @@ module aluTest;
 		error = 1;
 	 end
 	 
+	 // test modi instruction
+	 opCode = 4'b0110;
+	 a = 79;
+	 b = 4;
+	 #5
+	 if (result != 3)
+	 begin
+	   $display("Error with opCode: %b", opCode);
+		$display("Result: %b",result);
+		error = 1;
+	 end
+	 
 	 // test subi and all possible flag cases
 	 opCode = 4'b1001;
 	 a = 16'b0000_0000_0000_0011; // 3 - 4 = -1 or 65535 (unsigned value)
@@ -476,10 +489,10 @@ module aluTest;
 		$display("Result: %b", result);
 		error = 1;
 	 end
-	 a = 16'b0000_0000_0000_0010; // 1 shifted left by -1 -> 0010 = 0001
+	 a = 16'b0000_0000_0000_0001; // 1000_0000_0000_0000 shifted left by 15 -> 0001
 	 b = 4'b1111; 
 	 #5
-	 if (result != 1)
+	 if (result != 16'b1000_0000_0000_0000)
 	 begin
 	   $display("Error with opCode: %b, opExt: %b", opCode, opExt);
 		$display("Result: %b", result);
@@ -498,10 +511,10 @@ module aluTest;
 		$display("Result: %b", result);
 		error = 1;
 	 end
-	 a = 16'b0000_0000_0000_0001; // 1 shifted right by -1 -> 0001 = 0010
+	 a = 16'b1000_0000_0000_0000; // 1 shifted right by 15 -> 1000_0000_0000_0000
 	 b = 4'b1111; 
 	 #5
-	 if (result != 2)
+	 if (result != 1)
 	 begin
 	   $display("Error with opCode: %b, opExt: %b", opCode, opExt);
 		$display("Result: %b", result);
