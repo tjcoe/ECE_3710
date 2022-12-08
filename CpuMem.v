@@ -1,5 +1,5 @@
 module CpuMem(
-  input clk, reset, vgaClr,
+  input clk, reset, start,
   inout ps2_clk, ps2_data,
   output hSync = 1, vSync = 1, 
   output bright,
@@ -29,7 +29,7 @@ module CpuMem(
     ram_block mem(.a_address(addrA[15:4]), .b_address(addrB[15:4]),.c_address(pixelAddress[15:4]), .a_writeData(writeDataA), .b_writeData(WriteDataB), .a_we(we), .b_we(weB), .clk(clk),
                   .a_out(memDataAram), .b_out(memDataBram),.c_out(bufOut));
 						
-	 vgaControl draw(clk,vgaClr,mX,mY,bufOut,hSync,vSync,bright,clk_25Mhz,VGA_SYNC_N,red,green,blue,pixelAddress);
+//	 vgaControl draw(clk,reset,mX,mY,bufOut,hSync,vSync,bright,clk_25Mhz,VGA_SYNC_N,red,green,blue,pixelAddress);
 	 
 	 io_block io_block(.a_address(addrA[15:4]), .b_address(addrB[15:4]), .a_writeData(writeDataA), .b_writeData(WriteDataB), .a_we(we), .b_we(weB), .clk(clk),
                   .a_out(memDataAio), .b_out(memDataBio));
@@ -52,7 +52,7 @@ module CpuMem(
 			.bin_x(xPos),
 			.bin_y(yPos)
 			);
-			
+
 	wire [3:0] x1s, x10s, x100s;
 	wire [3:0] y1s, y10s, y100s;
 	wire [10:0] xPos, yPos;
@@ -72,7 +72,7 @@ module CpuMem(
 	sev_seg sev_y1s (.value(y1s), .display(hexDisplays[27:21]));
 	sev_seg sev_y10s (.value(y10s), .display(hexDisplays[34:28]));
 	sev_seg sev_y100s (.value(y100s), .display(hexDisplays[41:35]));
-	
+//	
 	
 endmodule
 

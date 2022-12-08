@@ -14,7 +14,7 @@ module vgaTiming (
   // Declare registers
   reg vBright      = 0;
   reg [9:0] hCount = 0;
-  reg [9:0] vCount = 0;
+  reg [9:0] vCount = 1;
   
   
   // This always block is the clock divider that drives the enable signal

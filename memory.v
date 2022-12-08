@@ -51,8 +51,6 @@ module io_block_impl #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 		output reg [(DATA_SIZE - 1) : 0] out
 	);
 	
-	wire [ADDRESS_SIZE + 4:0] fullAddress = { address, 4'b0000 };
-	
 	always@(posedge clk)
 	begin
 		if(address[ADDRESS_SIZE-1:ADDRESS_SIZE-2] == 2'b11)
@@ -89,7 +87,7 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	
 	initial 
 	begin
-		$readmemb("Paint-ToBeEncoded.bin", memory);
+		$readmemb("Paint.bin", memory);
 	end
 
 	/*	FFFF(11)	_____________
