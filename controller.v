@@ -42,6 +42,8 @@ module controller (input clk, reset, zero,
     parameter PC_INCR         = 7'b0100111;
     parameter PC_INCR2        = 7'b0101000;
     parameter PC_INCR3        = 7'b0101001;
+    parameter MEM_READ2       = 7'b0101010;
+    parameter MEM_READ3       = 7'b0101011;
 
     parameter JCOND_EQ = 7'b0101010;
     parameter JCOND_NE = 7'b0101011;
@@ -211,8 +213,10 @@ module controller (input clk, reset, zero,
             MOVI_ALU_EX:     nextState <= WRITEBACK;
             LOAD_REG:        nextState <= MEM_READ;
             STOR_REG:        nextState <= MEM_WRITE;
-            MEM_READ:        nextState <= LOAD_WB;
+            MEM_READ:        nextState <= MEM_READ2;
             MEM_WRITE:       nextState <= PC_INCR;
+            MEM_READ2:       nextState <= MEM_READ3;
+            MEM_READ3:       nextState <= LOAD_WB;
             LOAD_WB:         nextState <= PC_INCR;
             JAL_REG:         nextState <= JAL_STORE_PC;
             JAL_STORE_PC:    nextState <= JAL_NEW_PC;
@@ -239,6 +243,7 @@ module controller (input clk, reset, zero,
                 begin
                     $display("FETCH");
                     instrWrite <= 1;
+                    sendPcAddr <= 1;
                 end
             DECODE:
                 begin
@@ -329,6 +334,16 @@ module controller (input clk, reset, zero,
                     $display("MEM_READ");
                     // nothing to do?
                 end
+            MEM_READ2:
+                begin
+                    $display("MEM_READ2");
+                    // nothing to do?
+                end
+            MEM_READ3:
+                begin
+                    $display("MEM_READ3");
+                    writeBackSelect <= 1;
+                end
             MEM_WRITE:
                 begin
                     $display("MEM_WRITE");
@@ -337,7 +352,6 @@ module controller (input clk, reset, zero,
             LOAD_WB:
                 begin
                     $display("LOAD_WB");
-                    writeBackSelect <= 1;
                     regWrite <= 1;
                 end
             JAL_REG:

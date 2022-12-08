@@ -30,7 +30,7 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
     flopr mdr(.clk(clk), .reset(reset), .d(memDataInbound), .q(storedMemData));
     flopr mar(.clk(clk), .reset(reset), .d(currentPc<<4), .q(pcAddr));
 
-    mux2 outAddrMux(.d0(a), .d1(pcAddr), .sel(sendPcAddr), .res(outAddr));
+    mux2 outAddrMux(.d0(memAddr), .d1(pcAddr), .sel(sendPcAddr), .res(outAddr));
     mux2 writeDataMux(.d0(writeBackData), .d1(currentPc), .sel(dataToWriteSelect), .res(writeDataRF));
     mux2 writeBackMux(.d0(aluResult), .d1(storedMemData), .sel(writeBackSelect), .res(writeBack));
     mux4 pcMux(.d0(incrPc), .d1(regDataB), .d2(branchPc), .d3(16'b0), .sel(pcSrc), .res(nextPc));
