@@ -44,9 +44,28 @@ module CpuMem(
 		);
 						
 	 vgaControl draw(clk,reset,xPos,yPos,bufOut,hSync,vSync,bright,clk_25Mhz,VGA_SYNC_N,red,green,blue,pixelAddress);
+
 	 
-	 io_block io_block(.a_address(addrA[15:4]), .b_address(addrB[15:4]), .a_writeData(writeDataA), .b_writeData(WriteDataB), .a_we(we), .b_we(weB), .clk(clk),
-                  .a_out(memDataAio), .b_out(memDataBio));
+	 // y 80+ is canvas
+	 // x < 213 red
+	 // x > 213 and x < 426 green
+	 // else blue
+	 io_block io_block(
+		.a_address(addrA[15:4]), 
+		.b_address(addrB[15:4]), 
+		.a_writeData(writeDataA), 
+		.b_writeData(WriteDataB), 
+		.a_we(we), 
+		.b_we(weB), 
+		.clk(clk),
+		.lmb(btns[2]),
+		.mmb(btns[1]),
+		.rmb(btns[0]),
+		.mouse_x(xPos),
+		.mouse_y(yPos),
+		.a_out(memDataAio), 
+		.b_out(memDataBio)
+		);
 	 
 	 ps2_mouse #(
 			.WIDTH(640),
