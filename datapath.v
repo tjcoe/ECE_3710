@@ -1,13 +1,13 @@
-module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, newAluInput, psrRegEn,
+module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, dataToWriteSelect, newAluInput, psrRegEn, sendPcAddr,
                  input [1:0] aluSrc1Select, aluSrc2Select, pcSrc,
-                 input [15:0] memDataInbound, pcData,
+                 input [15:0] memDataInbound,
                  output aluOutIsZero,
                  output [7:0] capturedPSR,
-                 output [15:0] instr, memWriteData, memAddr, pcAddr);
+                 output [15:0] instr, memWriteData, outAddr);
 
     wire [3:0]  regDest, regSrc;
     wire [7:0]  PSR;
-    wire [15:0] aluResult, nextPc, currentPc, regDataA, regDataB, a, b, aluSrc1, aluSrc2, writeBackData, writeBack, writeDataRF, storedMemData, immediate, incrPc, branchPc;
+    wire [15:0] aluResult, nextPc, currentPc, regDataA, regDataB, a, b, aluSrc1, aluSrc2, writeBackData, writeBack, writeDataRF, storedMemData, immediate, incrPc, branchPc, memAddr, pcAddr;
 
     // register file address fields
     assign regDest = instr[11:8];
@@ -17,7 +17,7 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
     assign immediate = (instr[7] == 0) ? {8'b0, instr[7:0]} : {8'b1, instr[7:0]};
 
     // load instruction from memory into a register
-    flopenr instrReg(.clk(clk), .reset(reset), .en(instrWrite), .d(pcData), .q(instr));
+    flopenr instrReg(.clk(clk), .reset(reset), .en(instrWrite), .d(memDataInbound), .q(instr));
 
     // other registers and muxes
     flopenr pcReg(.clk(clk), .reset(reset), .en(pcEn), .d(nextPc), .q(currentPc));
@@ -30,6 +30,7 @@ module datapath (input clk, reset, pcEn, instrWrite, regWrite, writeBackSelect, 
     flopr mdr(.clk(clk), .reset(reset), .d(memDataInbound), .q(storedMemData));
     flopr mar(.clk(clk), .reset(reset), .d(currentPc<<4), .q(pcAddr));
 
+    mux2 outAddrMux(.d0(memAddr), .d1(pcAddr), .sel(sendPcAddr), .res(outAddr));
     mux2 writeDataMux(.d0(writeBackData), .d1(currentPc), .sel(dataToWriteSelect), .res(writeDataRF));
     mux2 writeBackMux(.d0(aluResult), .d1(storedMemData), .sel(writeBackSelect), .res(writeBack));
     mux4 pcMux(.d0(incrPc), .d1(regDataB), .d2(branchPc), .d3(16'b0), .sel(pcSrc), .res(nextPc));

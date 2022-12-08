@@ -1,10 +1,10 @@
 module CpuMem(
   input clk, reset, start,
   inout ps2_clk, ps2_data,
-  output hSync = 1, vSync = 1, 
+  output hSync, vSync, 
   output bright,
   output clk_25Mhz,       // drives pixel clock for VGA DAC
-  output VGA_SYNC_N = 0,  // unused so tied to ground
+  output VGA_SYNC_N,  // unused so tied to ground
   output [7:0] red,
   output [7:0] green,
   output [7:0] blue,
@@ -28,8 +28,8 @@ module CpuMem(
 	 assign memDataA = addrA[15:14] == 2'b11 ? memDataAio : memDataAram;
 	 assign memDataB = addrB[15:14] == 2'b11 ? memDataBio : memDataBram;
 
-    cpu proc(.clk(clk), .reset(reset), .memDataInbound(memDataA), .pcData(memDataB),
-             .memWrite(we), .memWriteData(writeDataA), .memAddr(addrA), .pcAddr(addrB));
+    cpu proc(.clk(clk), .reset(reset), .memDataInbound(memDataA),
+             .memWrite(we), .memWriteData(writeDataA), .outAddr(addrA));
 				 
     ram_block mem(
 		.a_address(addrA[15:4]), 

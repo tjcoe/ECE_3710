@@ -3,7 +3,7 @@ module controller (input clk, reset, zero,
                    input [7:0] PSR,
                    output reg memWrite, 
                    output pcEn,
-                   output reg writeBackSelect, dataToWriteSelect, newAluInput, psrRegEn,
+                   output reg writeBackSelect, dataToWriteSelect, newAluInput, psrRegEn, sendPcAddr,
                    output reg regWrite, instrWrite,
                    output reg [1:0] aluSrc1Sel, aluSrc2Sel, pcSrc);
 
@@ -224,6 +224,7 @@ module controller (input clk, reset, zero,
     end
 
     always @(*) begin
+        sendPcAddr <= 0;
         pcSrc <= 2'b00; pcWriteCond <= 0; pcWrite <= 0;
         instrWrite <= 0;
         newAluInput <= 0; psrRegEn <= 0;
@@ -365,6 +366,7 @@ module controller (input clk, reset, zero,
             PC_INCR3:
                 begin
                     $display("PC_INCR3"); // kill cycle
+                    sendPcAddr <= 1;
                 end
             JCOND_EQ:
                 begin

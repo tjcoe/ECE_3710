@@ -6,10 +6,10 @@ module vgaControl (
   input [10:0] mX, 
   input [10:0] mY,
   input [15:0] bufOut,
-  output hSync = 1, vSync = 1, 
+  output hSync, vSync, 
   output bright,
   output clk_25Mhz,       // drives pixel clock for VGA DAC
-  output VGA_SYNC_N = 0,  // unused so tied to ground
+  output VGA_SYNC_N,  // unused so tied to ground
   output [7:0] red,
   output [7:0] green,
   output [7:0] blue,
