@@ -119,8 +119,8 @@ Main:
     MOVI $1 %r4    ; Initialize the color to Red
     MOV %r0 %r11   ; Initialize r11 to zero. 
     SUBI $1 %r11   ; %r11 = SHORT MAX
-    MOVI $4 %r3    ; Store loop start
-    MOVI $47 %r14  ; Store UpdateColor
+    MOVI $5 %r3    ; Store loop start
+    MOVI $53 %r14  ; Store UpdateColor
 
 Loop: 
     MOVI $1 %r13   ; Move 1 into load address register
