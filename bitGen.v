@@ -5,9 +5,11 @@ module bitGen (
   input [8:0] vPos,
   input [10:0] x,
   input [10:0] y,
+  input [15:0] bufOut,
   output reg [7:0] red,
   output reg [7:0] green,
-  output reg [7:0] blue
+  output reg [7:0] blue,
+  output [15:0] address
   );
   
   // Parameters for On/Off since 8-bit colors are all tied together on = 255 or 7'b1111_1111
@@ -19,11 +21,23 @@ module bitGen (
   
   reg [10:0] mX;
   reg [10:0] mY;
+  wire [3:0] position;
+  reg [3:0] bufPixel;
   
+  // instantiates module to get pixel memory address and position based on current pixel location
+  getPixel getPixel(hPos,yPos,position,address);
+
   // combinational always block
   always @*  
   begin
-    
+  
+    case (position)
+	   4'b0000: bufPixel = bufOut[3:0];
+		4'b0001: bufPixel = bufOut[7:4];
+		4'b0010: bufPixel = bufOut[11:8];
+		4'b0100: bufPixel = bufOut[15:12];
+	 endcase
+	 
 	 mX = x;
 	 mY = y;
   
@@ -77,11 +91,11 @@ module bitGen (
 		green <= OFF;
 		blue  <= ON;
     end
-	 else if (draw) // loads image buffer from memory (not done just white right now)
+	 else if (draw) // loads image buffer from memory
 	 begin
-	   red   <= ON;
-		green <= ON;
-		blue  <= ON;
+	   red   <= bufPixel[2];
+		green <= bufPixel[1];
+		blue  <= bufPixel[0];
 	 end
 	 else  // if the pixel is not in any of the boxes then paint the screen black
 	 begin
