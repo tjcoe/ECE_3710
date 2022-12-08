@@ -4,7 +4,7 @@ module controller (input clk, reset, zero,
                    output reg memWrite, 
                    output pcEn,
                    output reg writeBackSelect, dataToWriteSelect, newAluInput, psrRegEn,
-                   output reg regWrite, instrWrite,
+                   output reg regWrite, instrWrite, sendPcAddr,
                    output reg [1:0] aluSrc1Sel, aluSrc2Sel, pcSrc);
 
     // Every state that begins with a 001/010/011/100 is for internal use
@@ -223,6 +223,7 @@ module controller (input clk, reset, zero,
     end
 
     always @(*) begin
+        sendPcAddr <= 0;
         pcSrc <= 2'b00; pcWriteCond <= 0; pcWrite <= 0;
         instrWrite <= 0;
         newAluInput <= 0; psrRegEn <= 0;
@@ -363,6 +364,7 @@ module controller (input clk, reset, zero,
                 end
             PC_INCR3:
                 begin
+                    sendPcAddr <= 1;
                     $display("PC_INCR3"); // kill cycle
                 end
             JCOND_EQ:
