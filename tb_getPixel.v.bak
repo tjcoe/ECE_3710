@@ -9,6 +9,7 @@ module getPixelTest;
  getPixel UUT (
    .x(x),
 	.y(y),
+	.line(line),
 	.position(position),
 	.address(address)
 	);
@@ -20,7 +21,7 @@ module getPixelTest;
 	 y = 80;
 	 #5
 	 x = 0;
-	 y = 89;
+	 y = 81;
 	 #5
 	 x = 639;
 	 y = 479;
