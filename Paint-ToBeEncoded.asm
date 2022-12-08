@@ -18,7 +18,7 @@
     LSHI $4 %r13   
     LOAD %r13 %r6
     CMPI $80 %r6 
-    BGE $18    
+    BLS $18    
     MOVI $4 %r8   
     AND %r7 %r8   
     CMP %r8 %r0   
@@ -26,18 +26,18 @@
     MOVI $127 %r1
     ADDI $86 %r1 
     CMP %r1 %r5  
-    BGT $3   
+    BHI $3   
     MOVI $1 %r4  
     JUC %r3      
     LSHI $1 %r1 
     CMP %r1 %r5 
-    BGT $3      
+    BHI $3      
     MOVI $2 %r4 
     JUC %r3     
     MOVI $4 %r4  
     JUC %r3      
     CMP %r0 %r7   
-    JUC %r3       
+    JEQ %r3       
     MOV %r7 %r1            
     ANDI $1 %r1            
     CMPI $1 %r1           
@@ -64,7 +64,8 @@
     RSHI $2 %r8   
     MOVI $1 %r12  
     LSHI $10 %r12 
-    ADD %r12 %r8  
+    ADD %r12 %r8 
+    LSHI $4 %r8 
     LOAD %r8 %r9      
     MOVI $15 %r5      
     LSH %r10 %r5      

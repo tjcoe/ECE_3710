@@ -144,7 +144,7 @@ Loop:
 
     ; In color picker?
     CMPI $80 %r6 ; Check to see if we are in the canvas or control space
-    BGE $18    ;Should be 18
+    BLS $18      ;Should be 18
 
     MOVI $4 %r8    ;  Set r8 to 0b100
     AND %r7 %r8    ;  Check to see if left mouse button is clicked
@@ -156,14 +156,14 @@ Loop:
 CheckRed:
     MOVI $127 %r1  ; Move 127 into r1 we need R1 to equal 213
     ADDI $86 %r1  ; Move 127 into r1 we need R1 to equal 213
-    CMP %r1 %r5  ; Red is at xpos <= 213
-    BGT $3   ; Jump to green check
+    CMP %r5 %r1  ; Red is at xpos <= 213
+    BHI $3   ; Jump to green check
     MOVI $1 %r4    ; No jump set to red
     JUC %r3       ; New color selected loop again
 
 CheckGreen:
     LSHI $1 %r1    ; Get r1 to equal 426
-    CMP %r1 %r5  ; Green is at xpos 214 <= x <= 426
+    CMP %r5 %r1  ; Green is at xpos 214 <= x <= 426
     BGT $3      ; Jump to blue check
     MOVI $2 %r4    ; No jump set to red
     JUC %r3       ; New color selected loop again
@@ -181,7 +181,7 @@ CheckBlue:
 
 InCanvas:
     CMP %r0 %r7    ; Check if mouse is clicked
-    JUC %r3        ; No buttons clicked loop
+    JEQ %r3        ; No buttons clicked loop
 
 SetColorWhite:
     MOV %r7 %r1            ; Copy buttons into temp
@@ -222,6 +222,7 @@ UpdateColor:
     LSHI $10 %r12  ; r12 = 1024
     ADD %r12 %r8   ; Add 1024 to get into MemLocation
                     
+    LSHI $4 %r8        ; fill bottom 4 bits
     LOAD %r8 %r9       ; Load pixel from buf location
     MOVI $15 %r5       ; r5 = 0b1111
     LSH %r10 %r5       ; shift 1111 to 0 out r11

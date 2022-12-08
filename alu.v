@@ -153,7 +153,7 @@ module alu (
 			 end
 			 4'b0001: // RSHI - logical right shift
 			 begin
-				result = a>>b;
+				result = a>>b[3:0];
 			 end
 			 default: result = 0;
 		  endcase

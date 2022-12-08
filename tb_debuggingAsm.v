@@ -43,10 +43,10 @@ module tb_debuggingAsm();
 		.b_we(weB), 
 		.clk(clk),
 		.lmb(1),
-		.mmb(1),
-		.rmb(1),
-		.mouse_x(16'd50),
-		.mouse_y(16'd30),
+		.mmb(0),
+		.rmb(0),
+		.mouse_x(16'd479),
+		.mouse_y(16'd80),
 		.a_out(memDataAio), 
 		.b_out(memDataBio)
 		);

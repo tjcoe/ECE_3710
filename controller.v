@@ -42,8 +42,8 @@ module controller (input clk, reset, zero,
     parameter PC_INCR         = 7'b0100111;
     parameter PC_INCR2        = 7'b0101000;
     parameter PC_INCR3        = 7'b0101001;
-    parameter MEM_READ2       = 7'b0101010;
-    parameter MEM_READ3       = 7'b0101011;
+    parameter MEM_READ2       = 7'b1001000;
+    parameter MEM_READ3       = 7'b1001001;
 
     parameter JCOND_EQ = 7'b0101010;
     parameter JCOND_NE = 7'b0101011;
@@ -110,21 +110,21 @@ module controller (input clk, reset, zero,
     parameter Jcond = 7'b0001100; // see cond values
 
     // Bcond/Jcond "cond" codes
-    parameter EQ = 7'b000000;
-    parameter NE = 7'b000001;
-    parameter GE = 7'b001101;
-    parameter CS = 7'b000010;
-    parameter CC = 7'b000011;
-    parameter HI = 7'b000100;
-    parameter LS = 7'b000101;
-    parameter LO = 7'b001010;
-    parameter HS = 7'b001011;
-    parameter GT = 7'b000110;
-    parameter LE = 7'b000111;
-    parameter FS = 7'b001000;
-    parameter FC = 7'b001001;
-    parameter LT = 7'b001100;
-    parameter UC = 7'b001110;
+    parameter EQ = 4'b0000;
+    parameter NE = 4'b0001;
+    parameter GE = 4'b1101;
+    parameter CS = 4'b0010;
+    parameter CC = 4'b0011;
+    parameter HI = 4'b0100;
+    parameter LS = 4'b0101;
+    parameter LO = 4'b1010;
+    parameter HS = 4'b1011;
+    parameter GT = 4'b0110;
+    parameter LE = 4'b0111;
+    parameter FS = 4'b1000;
+    parameter FC = 4'b1001;
+    parameter LT = 4'b1100;
+    parameter UC = 4'b1110;
     // default for 001111: never jump (continue to next instr?)
 
     reg [6:0] nextState, state;
@@ -297,6 +297,7 @@ module controller (input clk, reset, zero,
                     $display("CMPI_ALU_EX");
                     aluSrc1Sel <= 2'b01;
                     aluSrc2Sel <= 2'b01;
+                    psrRegEn <= 1;
                 end
             MOV_LOAD_REG:
                 begin
@@ -375,6 +376,7 @@ module controller (input clk, reset, zero,
                 begin
                     $display("PC_INCR");
                     pcWrite <= 1;
+                    aluSrc1Sel <= 2'b01;
                 end
             PC_INCR2:
                 begin
@@ -555,7 +557,7 @@ module controller (input clk, reset, zero,
             BCOND_GT:
                 begin
                     $display("BCOND_GT");
-                    if (PSR[0] == 1) pcSrc <= 2'b10;
+                    if (PSR[1] == 1) pcSrc <= 2'b10;
                     else pcSrc <= 2'b0;
                     pcWrite <= 1;
                 end
