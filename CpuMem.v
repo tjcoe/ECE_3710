@@ -20,16 +20,30 @@ module CpuMem(
 	 wire [15:0] memDataBram;
 	 wire [15:0] memDataBio;
 	 
+	 
+	 wire [3:0] x1s, x10s, x100s;
+	 wire [3:0] y1s, y10s, y100s;
+	 wire [10:0] xPos, yPos;
+	 
 	 assign memDataA = addrA[15:14] == 2'b11 ? memDataAio : memDataAram;
 	 assign memDataB = addrB[15:14] == 2'b11 ? memDataBio : memDataBram;
 
     cpu proc(.clk(clk), .reset(reset), .memDataInbound(memDataA), .pcData(memDataB),
              .memWrite(we), .memWriteData(writeDataA), .memAddr(addrA), .pcAddr(addrB));
 				 
-    ram_block mem(.a_address(addrA[15:4]), .b_address(addrB[15:4]),.c_address(pixelAddress[15:4]), .a_writeData(writeDataA), .b_writeData(WriteDataB), .a_we(we), .b_we(weB), .clk(clk),
-                  .a_out(memDataAram), .b_out(memDataBram),.c_out(bufOut));
+    ram_block mem(
+		.a_address(addrA[15:4]), 
+		.b_address(pixelAddress[15:4]), 
+		.a_writeData(writeDataA), 
+		.b_writeData(WriteDataB), 
+		.a_we(we), 
+		.b_we(weB), 
+		.clk(clk),
+      .a_out(memDataAram), 
+		.b_out(bufOut)
+		);
 						
-//	 vgaControl draw(clk,reset,mX,mY,bufOut,hSync,vSync,bright,clk_25Mhz,VGA_SYNC_N,red,green,blue,pixelAddress);
+	 vgaControl draw(clk,reset,xPos,yPos,bufOut,hSync,vSync,bright,clk_25Mhz,VGA_SYNC_N,red,green,blue,pixelAddress);
 	 
 	 io_block io_block(.a_address(addrA[15:4]), .b_address(addrB[15:4]), .a_writeData(writeDataA), .b_writeData(WriteDataB), .a_we(we), .b_we(weB), .clk(clk),
                   .a_out(memDataAio), .b_out(memDataBio));
@@ -53,9 +67,6 @@ module CpuMem(
 			.bin_y(yPos)
 			);
 
-	wire [3:0] x1s, x10s, x100s;
-	wire [3:0] y1s, y10s, y100s;
-	wire [10:0] xPos, yPos;
 	
 	assign x1s = xPos % 10;
 	assign x10s = (xPos / 10) % 10;

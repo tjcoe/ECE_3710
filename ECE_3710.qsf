@@ -37,12 +37,6 @@
 # -------------------------------------------------------------------------- #
 
 
-set_global_assignment -name SDC_FILE ECE_3710.sdc
-set_global_assignment -name VERILOG_FILE vgaTiming.v
-set_global_assignment -name VERILOG_FILE vgaControl.v
-set_global_assignment -name VERILOG_FILE tb_timing.v
-set_global_assignment -name VERILOG_FILE tb_bitGen.v
-set_global_assignment -name VERILOG_FILE bitGen.v
 set_location_assignment PIN_C10 -to VGA_SYNC_N
 set_location_assignment PIN_J14 -to blue[7]
 set_location_assignment PIN_G15 -to blue[6]
@@ -121,24 +115,6 @@ set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_global_assignment -name VERILOG_FILE ps2_mouse.v
-set_global_assignment -name VERILOG_FILE tb_simpleAdder.v
-set_global_assignment -name VERILOG_FILE tb_registerfile.v
-set_global_assignment -name VERILOG_FILE tb_memoryFSM.v
-set_global_assignment -name VERILOG_FILE tb_memory.v
-set_global_assignment -name VERILOG_FILE tb_datapath.v
-set_global_assignment -name VERILOG_FILE tb_cpuMem.v
-set_global_assignment -name VERILOG_FILE tb_cpu.v
-set_global_assignment -name VERILOG_FILE tb_alu.v
-set_global_assignment -name VERILOG_FILE SimpleAdder.v
-set_global_assignment -name VERILOG_FILE registerfile.v
-set_global_assignment -name VERILOG_FILE miscmodules.v
-set_global_assignment -name VERILOG_FILE memory.v
-set_global_assignment -name VERILOG_FILE datapath.v
-set_global_assignment -name VERILOG_FILE CpuMem.v
-set_global_assignment -name VERILOG_FILE cpu.v
-set_global_assignment -name VERILOG_FILE controller.v
-set_global_assignment -name VERILOG_FILE alu.v
 set_location_assignment PIN_AF14 -to clk
 set_location_assignment PIN_V17 -to btns[2]
 set_location_assignment PIN_W16 -to btns[1]
@@ -196,5 +172,30 @@ set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_location_assignment PIN_AE12 -to reset
-set_global_assignment -name FLOW_ENABLE_RTL_VIEWER ON
+set_global_assignment -name FLOW_ENABLE_RTL_VIEWER OFF
+set_global_assignment -name VERILOG_FILE getPixel.v
+set_global_assignment -name SDC_FILE ECE_3710.sdc
+set_global_assignment -name VERILOG_FILE vgaTiming.v
+set_global_assignment -name VERILOG_FILE vgaControl.v
+set_global_assignment -name VERILOG_FILE tb_timing.v
+set_global_assignment -name VERILOG_FILE tb_bitGen.v
+set_global_assignment -name VERILOG_FILE bitGen.v
+set_global_assignment -name VERILOG_FILE ps2_mouse.v
+set_global_assignment -name VERILOG_FILE tb_simpleAdder.v
+set_global_assignment -name VERILOG_FILE tb_registerfile.v
+set_global_assignment -name VERILOG_FILE tb_memoryFSM.v
+set_global_assignment -name VERILOG_FILE tb_memory.v
+set_global_assignment -name VERILOG_FILE tb_datapath.v
+set_global_assignment -name VERILOG_FILE tb_cpuMem.v
+set_global_assignment -name VERILOG_FILE tb_cpu.v
+set_global_assignment -name VERILOG_FILE tb_alu.v
+set_global_assignment -name VERILOG_FILE SimpleAdder.v
+set_global_assignment -name VERILOG_FILE registerfile.v
+set_global_assignment -name VERILOG_FILE miscmodules.v
+set_global_assignment -name VERILOG_FILE memory.v
+set_global_assignment -name VERILOG_FILE datapath.v
+set_global_assignment -name VERILOG_FILE CpuMem.v
+set_global_assignment -name VERILOG_FILE cpu.v
+set_global_assignment -name VERILOG_FILE controller.v
+set_global_assignment -name VERILOG_FILE alu.v
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

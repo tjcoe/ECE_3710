@@ -83,7 +83,7 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	);
 	
 	
-	reg [(DATA_SIZE - 1) : 0] memory[(2** ADDRESS_SIZE - 1) : 0];
+	reg [(DATA_SIZE - 1) : 0] memory[(ADDRESS_SIZE - 1) : 0];
 	
 	initial 
 	begin
@@ -150,15 +150,5 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 			// 11: // Do nothing, IO Space
 			default: ;
 		endcase
-		
-		case (c_address[ADDRESS_SIZE-1:ADDRESS_SIZE-2])
-			2'b00, 2'b01, 2'b10:
-			begin
-				c_out <= memory[c_address];
-			end
-			// 11: // Do nothing, IO Space
-			default: ;
-		endcase
-		
 	end
 endmodule
