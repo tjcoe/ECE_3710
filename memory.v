@@ -5,10 +5,10 @@ module io_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 		input a_we, b_we, clk,
 		input lmb, mmb, rmb,
 		input [15:0] mouse_x, mouse_y,
-		output reg [(DATA_SIZE - 1) : 0] a_out, b_out
+		output [(DATA_SIZE - 1) : 0] a_out, b_out
 	);
 
-	io_block_impl #(.DATA_SIZE(DATA_SIZE), ADDRESS_SIZE(ADDRESS_SIZE))
+	io_block_impl
 	io_block_a
 	(
 		.address(a_address),
@@ -24,7 +24,7 @@ module io_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	);
 	
 	
-	io_block_impl #(.DATA_SIZE(16), ADDRESS_SIZE(12))
+	io_block_impl
 	io_block_b
 	(
 		.address(b_address),
@@ -58,8 +58,6 @@ module io_block_impl #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 		if(address[ADDRESS_SIZE-1:ADDRESS_SIZE-2] == 2'b11)
 		begin
 			case (address)
-				12'hFFA:
-					out <= { 12'b000000000000, pushButtons };
 					
 				12'hFF9:
 					out <= { 13'b0000000000000, lmb, mmb, rmb };
@@ -70,7 +68,7 @@ module io_block_impl #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 				12'hFF7:
 					out <= mouse_y;
 				
-				default: a_out <= 0;
+				default: out <= 0;
 			endcase
 		end
 	end

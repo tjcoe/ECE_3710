@@ -1,4 +1,4 @@
-//
+
 // Permission:
 //
 //   Terasic grants permission to use and modify this code for use
@@ -115,7 +115,7 @@ parameter listen =2'b00,
           pullclk=2'b01,
           pulldat=2'b10,
           trans  =2'b11;
-          
+
 //=======================================================
 //  Structural coding
 //=======================================================          
@@ -125,7 +125,7 @@ always@(posedge CLOCK_50)
 	begin
 		clk_div <= clk_div+1;
 	end
-	
+
 assign clk = clk_div[8];
 //tristate output control for PS2_DAT and PS2_CLK;
 assign PS2_CLK = ce?ps2_clk_out:1'bZ;
@@ -250,16 +250,13 @@ begin
 				oX_BIN <= oX_BIN - 1'b1;
 			end
 		end
-		
+
 		if($signed(y_latch) >= THRESHOLD)
 		begin
 			y_latch <= y_latch - BIN;
 			if(oY_BIN != 0)
 			begin
 				oY_BIN <= oY_BIN - 1'b1;
-			if(oY_BIN != HEIGHT-1)
-			begin
-				oY_BIN <= oY_BIN + 1'b1;
 			end
 		end
 		else if($signed(y_latch) <= -THRESHOLD)
@@ -268,12 +265,9 @@ begin
 			if(oY_BIN != HEIGHT-1)
 			begin
 				oY_BIN <= oY_BIN + 1'b1;
-			if(oY_BIN != 0)
-			begin
-				oY_BIN <= oY_BIN - 1'b1;
 			end
 		end
-		
+
 	end
 end
 
