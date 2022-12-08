@@ -86,7 +86,7 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	
 	initial 
 	begin
-		$readmemb("C:\\Users\\Isaac\\Documents\\ECE3710\\project\\ECE_3710\\Paint.bin", memory);
+		$readmemb("Paint.bin", memory);
 	end
 
 	
