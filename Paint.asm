@@ -128,12 +128,19 @@ Loop:
 
 
     SUBI $7 %r13   ; 4089 contains buttons
+    MOV %r13 %r15  ; Store 4089
+    LSHI $4 %r13   ; Pad to make 16 bit address, bottom 4 bits cut off on load.
     LOAD %r13 %r7
-    SUBI $1 %r13   ; 4088 contains x position
-    LOAD %r13 %r5
-    SUBI $1 %r13   ; 4087 contains y position
-    LOAD %r13 %r6
 
+    SUBI $1 %r15   ; 4088 contains x position
+    MOV %r15 %r13
+    LSHI $4 %r13   ; Pad to make 16 bit address, bottom 4 bits cut off on load.
+    LOAD %r13 %r5
+
+    SUBI $1 %r15   ; 4087 contains y position
+    MOV %r15 %r13
+    LSHI $4 %r13   ; Pad to make 16 bit address, bottom 4 bits cut off on load.
+    LOAD %r13 %r6
 
     ; In color picker?
     CMPI $80 %r6 ; Check to see if we are in the canvas or control space
@@ -196,7 +203,7 @@ LeftMouseClicked:
     MOV %r4 %r2
 
 UpdateColor:
-    RSHI $3 %r5    ; Should be 47 Divide position by 8 to get buffer address
+    RSHI $3 %r5    ; Should be 53 Divide position by 8 to get buffer address
     SUBI $80 %r6   ; Subtract off control space to get 0 based index
     RSHI $3 %r6    ; Divide position by 8 to get buffer address
 

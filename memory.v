@@ -72,24 +72,24 @@ module io_block_impl #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	end
 endmodule
 	
-
-
+	
 module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	(
-		input [(ADDRESS_SIZE - 1) : 0] a_address, b_address, c_address,
+		input [(ADDRESS_SIZE - 1) : 0] a_address, b_address, 
 		input [(DATA_SIZE - 1) : 0] 	 a_writeData, b_writeData,
 		input a_we, b_we, clk,
-		output reg [(DATA_SIZE - 1) : 0] a_out, b_out, c_out
+		output reg [(DATA_SIZE - 1) : 0] a_out, b_out
 	);
 	
 	
-	reg [(DATA_SIZE - 1) : 0] memory[(ADDRESS_SIZE - 1) : 0];
+	reg [(DATA_SIZE - 1) : 0] memory[(2 ** ADDRESS_SIZE - 1) : 0];
 	
 	initial 
 	begin
 		$readmemb("Paint.bin", memory);
 	end
 
+	
 	/*	FFFF(11)	_____________
 	*				|				|
 	*				|				|
@@ -118,37 +118,21 @@ module ram_block #(parameter DATA_SIZE = 16, parameter ADDRESS_SIZE = 12)
 	always @ (posedge clk)
 	begin
 		// 00 -> Even if we don't write
-		// 10 01 -> Read and writes like normal
-		// 11 -> Do nothing
-
-		case (a_address[ADDRESS_SIZE-1:ADDRESS_SIZE-2])
-			2'b00: a_out <= memory[a_address]; // Do not allow writes to code section
-			2'b01, 2'b10:
-			begin
-				if (a_we)
-				begin
-					memory[a_address] <= a_writeData;
-					a_out <= a_writeData;
-				end
-				else a_out <= memory[a_address];
-			end
-			// 11: // Do nothing, IO Space
-			default: ;
-		endcase
-
-		case (b_address[ADDRESS_SIZE-1:ADDRESS_SIZE-2])
-			2'b00: b_out <= memory[b_address]; // Do not allow writes to code section
-			2'b01, 2'b10:
-			begin
-				if (b_we)
-				begin
-					memory[b_address] <= b_writeData;
-					b_out <= b_writeData;
-				end
-				else b_out <= memory[b_address];
-			end
-			// 11: // Do nothing, IO Space
-			default: ;
-		endcase
+		// else Read and writes like normal
+			if(a_we && a_address >= 12'b010000000000)
+				memory[a_address] = a_writeData;
+		
+			a_out <= memory[a_address];
 	end
+	
+	always@(posedge clk)
+	begin
+		if(b_we && b_address >= 12'b010000000000)
+			memory[b_address] = b_writeData;
+		
+		b_out <= memory[b_address];
+	end
+		
 endmodule
+
+
