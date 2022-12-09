@@ -113,9 +113,13 @@ module bitGen (
     end
 	 else if (draw) // loads image buffer from memory
 	 begin
-	   red   = bufPixel[2];
-		green = bufPixel[1];
-		blue  = bufPixel[0];
+	   case (bufPixel)
+		  4'b0000: begin red = ON;  green = ON;  blue = ON;  end
+		  4'b0001: begin red = ON;  green = OFF; blue = OFF; end
+		  4'b0010: begin red = OFF; green = ON;  blue = OFF; end
+		  4'b0100: begin red = OFF; green = OFF; blue = ON;  end
+		  default: begin red = ON; green = OFF; blue = OFF; end
+		endcase
 	 end
 	 else  // if the pixel is not in any of the boxes then paint the screen black
 	 begin

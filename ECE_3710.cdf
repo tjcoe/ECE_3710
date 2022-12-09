@@ -5,8 +5,8 @@ JedecChain;
 
 	P ActionCode(Ign)
 		Device PartName(SOCVHPS) MfrSpec(OpMask(0));
-	P ActionCode(Ign)
-		Device PartName(5CSEMA5F31) MfrSpec(OpMask(0) FullPath("C:/Users/tommy/OneDrive/Documents/School/22-23/Fall 2022/ECE 3710/project/ECE_3710/output_files/ECE_3710.sof"));
+	P ActionCode(Cfg)
+		Device PartName(5CSEMA5F31) Path("C:/Users/tommy/OneDrive/Documents/School/22-23/Fall 2022/ECE 3710/project/ECE_3710/output_files/") File("ECE_3710.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

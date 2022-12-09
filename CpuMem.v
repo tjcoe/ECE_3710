@@ -11,6 +11,7 @@ module CpuMem(
   output [2:0] btns, // 2 - lmb, 1 - mmb, 0 - rmb
   output [41:0] hexDisplays
   );
+  
     wire [15:0] memDataA, addrA, writeDataA, memDataB, addrB, WriteDataB;
     wire we, weB;
 	 wire [15:0] bufOut;
