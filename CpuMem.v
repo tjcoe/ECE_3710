@@ -13,7 +13,8 @@ module CpuMem(
   );
   
     wire [15:0] memDataA, addrA, writeDataA, memDataB, addrB, WriteDataB;
-    wire we, weB;
+    wire we;
+	 wire weB = 0;
 	 wire [15:0] bufOut;
 	 wire [15:0] pixelAddress;
 	 wire [15:0] memDataAram;
@@ -34,17 +35,17 @@ module CpuMem(
 				 
     ram_block mem(
 		.a_address(addrA[15:4]), 
-		.b_address(pixelAddress[15:4]), 
+		.b_address(addrB[15:4]), 
 		.a_writeData(writeDataA), 
 		.b_writeData(WriteDataB), 
 		.a_we(we), 
 		.b_we(weB), 
 		.clk(clk),
       .a_out(memDataAram), 
-		.b_out(bufOut)
+		.b_out(memDataBram)
 		);
 						
-	 vgaControl draw(clk,reset,xPos,yPos,bufOut,hSync,vSync,bright,clk_25Mhz,VGA_SYNC_N,red,green,blue,pixelAddress);
+	 vgaControl draw(clk,reset,xPos,yPos,memDataBram,hSync,vSync,bright,clk_25Mhz,VGA_SYNC_N,red,green,blue,addrB);
 
 	 
 	 // y 80+ is canvas

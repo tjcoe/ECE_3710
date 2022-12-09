@@ -19,10 +19,11 @@ module vgaControl (
   // various wires for connecting inputs to outputs
   wire [9:0] hPos;
   wire [8:0] vPos;
+  wire clkInvert;
   
-  vgaTiming timing(clk,clr,hSync,vSync,bright,hPos,vPos,clk_25Mhz);
+  vgaTiming timing(clk,clr,hSync,vSync,bright,hPos,vPos,clkInvert);
   bitGen paint(bright, hPos, vPos, mX, mY, bufOut, red, green, blue,address); 
   
-
+  assign clk_25Mhz = ~clkInvert;
   
   endmodule
