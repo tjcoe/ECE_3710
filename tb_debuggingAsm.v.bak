@@ -10,7 +10,6 @@ module tb_debuggingAsm();
 
 	wire [15:0] pixelAddress;
 	wire [15:0] bufOut;
-	reg [15:0] mouseX=0;
 
     //CpuMem uut(clk, reset, start, ps2_clk, ps2_data, hSync, vSync, bright, clk_25Mhz, VGA_SYNC_N, red, green, blue, btns, hexDisplays);
 
@@ -46,7 +45,7 @@ module tb_debuggingAsm();
 		.lmb(1),
 		.mmb(0),
 		.rmb(0),
-		.mouse_x(mouseX),
+		.mouse_x(16'd479),
 		.mouse_y(16'd80),
 		.a_out(memDataAio), 
 		.b_out(memDataBio)
@@ -54,18 +53,8 @@ module tb_debuggingAsm();
 
     initial begin
         reset = 1;
-		  mouseX = 0;
         #22 reset = 0;
         #22 reset = 1;
-		  #4305
-		  mouseX = 10;
-		  #4305
-		  mouseX = 18;
-		  #4305
-		  mouseX = 26;
-		  #4305
-		  mouseX = 34;
-		  
     end
 
     always begin

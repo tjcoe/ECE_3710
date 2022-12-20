@@ -21,7 +21,5 @@ module cpu(input clk, reset,
                     .dataToWriteSelect(dataToWriteSelect), .pcSrc(pcSrc), .sendPcAddr(sendPcAddr), .newAluInput(newAluInput),
                     .psrRegEn(psrRegEn), .regWrite(regWrite), .instrWrite(instrWrite),
                     .aluSrc1Sel(aluSrc1Select), .aluSrc2Sel(aluSrc2Select));
-	
-    
 	 
 endmodule

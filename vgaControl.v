@@ -3,8 +3,8 @@
 //
 module vgaControl (
   input clk, clr,
-  input [10:0] mX, 
-  input [10:0] mY,
+  input [9:0] mX, 
+  input [8:0] mY,
   input [15:0] bufOut,
   output hSync, vSync, 
   output bright,
@@ -22,8 +22,9 @@ module vgaControl (
   wire clkInvert;
   
   vgaTiming timing(clk,clr,hSync,vSync,bright,hPos,vPos,clkInvert);
-  bitGen paint(bright, hPos, vPos, mX, mY, bufOut, red, green, blue,address); 
+  bitGen paint(clk, bright, hPos, vPos, mX, mY, bufOut, red, green, blue,address); 
   
+  // Inverts pixel clock to give the vga an extra half clock cycle to pull pixel info from memory
   assign clk_25Mhz = ~clkInvert;
   
   endmodule
