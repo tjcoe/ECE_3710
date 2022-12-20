@@ -1,3 +1,6 @@
+// simple test bench for the pixel math 
+// module for the vga controller
+// Tom Coe
 module getPixelTest;
 
  reg [10:0] x = 0;

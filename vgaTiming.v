@@ -2,6 +2,7 @@
 // and is the most important part. This module gets the correct
 // timing for hSync, vSync, bright, hPos, and vPos.
 // Also outputs the 25 Mhz pixel clock for the VGA DAC.
+// Tom Coe
 module vgaTiming (
   input clk, clr,
   output reg hSync = 1, vSync = 1, 

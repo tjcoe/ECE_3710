@@ -1,4 +1,5 @@
 // bitGen module that controlls how the vga draws the screen
+// Tom Coe
 module bitGen (
   input clk,
   input bright,

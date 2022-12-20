@@ -1,6 +1,5 @@
-// Simple top-level module tie together the 
-// timing, bitGen, and thunderbird FSM circuits.
-//
+// Top level module for vga timing and bitGen
+// Tom Coe
 module vgaControl (
   input clk, clr,
   input [9:0] mX, 

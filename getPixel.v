@@ -1,3 +1,8 @@
+// Used to test the pixel address offset math
+// for the vga controller. Not used in implementation
+// because it added latency to have the module removed.
+// So this functionality was added directly to the bitGen module.
+// Tom Coe
 module getPixel (
   input [10:0] x,
   input [10:0] y,
